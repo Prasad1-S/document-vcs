@@ -244,11 +244,10 @@ $(function () {
   });
 
 
-  $(document).on("click", ".share-btn", async function () {
+$(document).on("click", ".share-btn", async function () {
   const user = $(".share-input").val().trim();
   const access = $(".dropdown-item.active").data("value");
-  // get document id from the  data attribute
-  const dataId = $(".").data("id");
+  const dataId = $(".title-input").data("id"); // ✅ FIX
 
   if (!user) {
     alert("Enter email or username");
@@ -258,14 +257,8 @@ $(function () {
   try {
     const res = await fetch("/share", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        user,
-        access,
-        docId:dataId
-      })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user, access, docId: dataId })
     });
 
     const data = await res.json();
@@ -276,8 +269,6 @@ $(function () {
     }
 
     alert("Shared successfully");
-
-    // optional UX cleanup
     $(".share-input").val("");
     $(".overlay, .sharebox").fadeOut(150);
 
@@ -287,10 +278,19 @@ $(function () {
   }
 });
 
-$(document).on("click", ".editbtn", async function (){
-  const dataId = $(".").data("id");
-  window.location.href=`/edit/${dataId}`;
+$(document).on("click", ".editbtn", function () {
+  const dataId = $(".title-input").data("id"); // ✅ FIX
+  window.location.href = `/edit/${dataId}`;
 });
+
+
+///////overlay handler
+
+$(document).on("click", ".overlay", function () {
+  $(".overlay, .sharebox").fadeOut(150);
+  $("#accessMenu").hide();
+});
+
 
 /* ---------- MANAGE ACCESS ---------- */
 

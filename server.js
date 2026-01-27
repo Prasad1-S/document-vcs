@@ -6,6 +6,9 @@ import GoogleStrategy from "passport-google-oauth2";
 import { pool } from "./db.js";
 import env from "dotenv";
 import session from "express-session";
+import { Resend } from 'resend';
+
+
 
 
 const app = express();
@@ -549,6 +552,7 @@ app.delete("/doc/:docid",isAuthenticated, async(req,res)=>{
 app.post("/share",isAuthenticated , async(req,res)=>{
     const{user, access, docId} = req.body;
     // i have to identify first whether the user is email or userid
+    
 
     try {
         const result= await pool.query(
@@ -588,8 +592,31 @@ app.post("/share",isAuthenticated , async(req,res)=>{
                 res.status(401).json({message:"sorry you don't have permissions to share!"})
             }
         }else{
-            // integrate automatic email sending here!!!
-            console.log("implement the email sending logic here!!");
+
+            try {
+                // integrate automatic email sending here!!!
+                const resend = new Resend(process.env.EMAIL_API_KEY);
+                // const user = verify if it is email;
+                const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user);
+
+                if (!isEmail) {
+                  return res.status(400).json({ message: "Invalid email address" });
+                }
+
+                console.log(user);
+                await resend.emails.send({
+                  from: 'Acme <onboarding@resend.dev>',
+                  to: [user],
+                  subject: 'hello world',
+                  html: '<p>it works!</p>',
+                });
+
+                console.log("implement the email sending logic here!!");
+                return res.status(200).json({message:"successfully shred document"});
+            } catch (err) {
+                console.log(err);
+                return res.status(500).json({message:"Internal server error!"});
+            }
         }
     } catch (err) {
      console.log(err);   
