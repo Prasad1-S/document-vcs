@@ -39,10 +39,12 @@
             <img src="../assets/github.png" alt="Logo" class="profimg" height="40px" referrerpolicy="no-referrer">
             <% } %>
         </div>
-        <div class="row">Profile ID: Prasad1-S</div>
-        <div class="row">Email: prasadji@gmail.com</div>
-        <div class="row">My Documents: 21 Documents created</div>
-        <div class="row">Shared With Me: 11 Documents shared</div>
+        <% if(locals.data){ %>
+        <div class="row">Profile ID: <%= data.username %></div>
+        <div class="row">Email: <%= data.email %></div>
+        <div class="row">My Documents: <%= data.created %> Documents created</div>
+        <div class="row">Shared With Me: <%= data.shared %> Documents shared</div>
+        <% } %>
     </div>
     
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

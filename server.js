@@ -126,9 +126,33 @@ app.get("/new",(req,res)=>{
     }
 });
 
-app.get("/profile",(req,res)=>{
+app.get("/profile",async(req,res)=>{
     if(req.isAuthenticated()){
-        res.render("profile.ejs",{imgUrl: req.user.imgurl});
+        const userid= req.user.userid;
+        try {
+            const created = await pool.query(
+                "SELECT COUNT(*) AS total_created FROM access WHERE userid=$1 AND role='OWNER';",
+                [userid]
+            )
+
+            const shared = await pool.query(
+                "SELECT COUNT(*) AS total_shared FROM access WHERE userid=$1 AND role in ('EDITOR','VIEWER');",
+                [userid]
+            )
+
+            const data = {
+                username:req.user.username,
+                email:req.user.email,
+                created:created.rows[0].total_created,
+                shared:shared.rows[0].total_shared
+            }
+
+            res.render("profile.ejs",{data,imgUrl: req.user.imgurl});
+
+        } catch (err) {
+            console.log(err);
+        }
+        
     }else{
         res.render("loginRegister.ejs",{data:"Authentication required, Please login first!"});
     }
