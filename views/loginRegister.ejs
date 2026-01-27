@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login page</title>
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="noise">
+    <div class="navbar">
+        <img src="logo.png" alt="App logo" class="logo">
+        <h2>Multi User Notes App</h2>
+    </div>
+
+
+    <div class="toggle_box">
+    <div class="Register_toggle toggle">Register</div>
+    <div class="Login_toggle toggle">Login</div>
+    </div>
+    <div class="createAccount form">
+        <form action="/register" method="post" class="form_create">
+            <label for="">Create an Account</label>
+            <input type="username" name="username" required placeholder="email" aria-required="true">
+            <input type="password" name="password" required placeholder="password" required>
+            <button type="submit" class="register">Register</button>
+        </form>
+      <div class="card social-block">
+        <div class="card-body">
+          <a class="btn btn-block" href="/auth/google" role="button">
+            <i class="fab fa-google"></i>
+            Sign Up with Google
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="loginAccount form">
+        <form action="/login" method="post" class="form_reg">
+            <label for="">Login into Account</label>
+            <input type="username" name="username" required placeholder="email">
+            <input type="password" name="password" required placeholder="password">
+            <button type="submit" class="">Login</button>
+        </form>
+        <div class="card">
+          <div class="card-body">
+            <a class="btn btn-block" href="/auth/google" role="button">
+              <i class="fab fa-google"></i>
+              Sign In with Google
+            </a>
+          </div>
+        </div>
+    </div>
+
+    <% if(locals.data){ %>
+    <div class="usermsg">
+      <p><%= data %></p>
+    </div>
+    <% } %>
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

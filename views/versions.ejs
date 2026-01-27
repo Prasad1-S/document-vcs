@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Version History</title>
+
+  <link rel="stylesheet" href="/css/versions.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons@3.3.1/css/all/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+  <a href="/home" class="logo_name">Name</a>
+  <div class="profileDetails">
+    <div class="newDoc"><i class="fi fi-br-plus"></i></div>
+    <div class="home"><i class="fi fi-br-house-chimney"></i></div>
+
+    <% if(imgUrl){ %>
+      <img src="<%= imgUrl %>" class="profile" height="40">
+    <% } else { %>
+      <img src="../assets/github.png" class="profile" height="40">
+    <% } %>
+  </div>
+</div>
+
+<!-- Profile Menu -->
+<div class="logout">
+  <button class="prof"><i class="fi fi-rr-document"></i><span>My Profile</span></button>
+  <button class="setti"><i class="fi fi-rr-settings"></i><span>Settings</span></button>
+  <button class="log"><i class="fi fi-rr-power"></i><span>Logout</span></button>
+</div>
+
+<main class="version-history vh-layout">
+
+  <!-- LEFT: VERSION SLIDER -->
+  <div class="vh-list">
+
+    <div class="vh-header">
+      <h2>Version History</h2>
+      <p><strong>Current:</strong> v<%= currentVersion %></p>
+    </div>
+
+    <% if (versions && versions.length) { %>
+      <% versions.forEach(v => { %>
+
+        <div class="vh-card <%= v.isCurrent ? 'current' : '' %>"
+             data-id="<%= docid%>%>"
+             data-title="<%= v.title %>"
+             data-content="<%- v.content %>"
+             data-version="<%= v.versionCount %>"
+             data-editor="<%= v.editor.name %>"
+             data-time="<%= v.updatedAt %>"
+             data-id="<%=v.versionCount%>">
+
+          <div class="vh-avatar">
+            <img src="<%= v.editor.imgUrl %>" />
+          </div>
+
+          <div class="vh-info">
+            <div class="vh-title">
+              <span>v<%= v.versionCount %></span>
+              <% if (v.isCurrent) { %>
+                <span class="badge">Current</span>
+              <% } %>
+            </div>
+
+            <p class="summary"><%= v.summary %></p>
+
+            <small>
+              <strong><%= v.editor.name %></strong> • <%= v.updatedAt %>
+            </small>
+          </div>
+
+        </div>
+
+      <% }) %>
+    <% } else { %>
+      <p>No versions yet.</p>
+    <% } %>
+
+  </div>
+
+  <!-- RIGHT: VERSION PREVIEW -->
+  <div class="vh-preview">
+
+    <div class="preview-header">
+      <h3 id="preview-title"><%= title %></h3>
+      <small id="preview-meta">—</small>
+    </div>
+
+    <div class="preview-content" id="preview-content">
+      <p><%= currentcontent %></p>
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+$(function () {
+
+  // NAV
+  $('.prof').click(()=>location.href='/profile');
+  $('.newDoc').click(()=>location.href='/new');
+  $('.home').click(()=>location.href='/home');
+  $('.setti').click(()=>location.href='/settings');
+  $('.log').click(()=>location.href='/logout');
+
+  $('.profile').click(e=>{
+    e.stopPropagation();
+    $('.logout').toggle();
+  });
+
+  $(document).click(()=>$('.logout').hide());
+  $('.logout').click(e=>e.stopPropagation());
+
+  // VERSION PREVIEW
+  $('.vh-card').on('click', function () {
+    const docid=$(this).data("id");
+    const version=$(this).data("version");
+    console.log(version);
+    window.location=`/${docid}/v/${version}`
+  });
+
+});
+</script>
+
+</body>
+</html>

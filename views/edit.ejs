@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Document</title>
+    <link rel="stylesheet" href="../css/new_document.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons@3.3.1/css/all/all.min.css">
+</head>
+<body>
+
+    <!-- navbar -->
+    <div class="navbar">
+        <a href="/home" class="logo_name">Name</a>
+        <!-- link to profile -->
+        <div class="profileDetails">
+            <div class="newDoc"><i class="fi fi-br-plus"></i></div>
+            <div class="home"><i class="fi fi-br-house-chimney"></i></div>
+            <% if(imgUrl){ %>
+            <img src="<%= imgUrl %>" alt="Logo" class="profile" height="40px" referrerpolicy="no-referrer">
+            <% }else{ %>
+            <img src="../assets/github.png" alt="Logo" class="profile" height="40px" referrerpolicy="no-referrer">
+            <% } %>
+        </div>    
+    </div>
+
+    <div class="logout">
+        <button class="prof"><i class="fi fi-rr-document"></i><span>My Profile</span></button>
+        <button class="setti"><i class="fi fi-rr-settings"></i><span>Settings</span></button>
+        <button class="log"><i class="fi fi-rr-power"></i><span>Logout</span></button>
+    </div>
+
+    <% if(locals.data){ %>
+    <div class="DocBox">
+      <form method="post" action="/edit">
+        
+        <input 
+          type="text" 
+          class="title-input"
+          placeholder="Untitled"
+          name="title"
+          value="<%= data.title %>"
+          required
+          readonly
+        />
+      
+        <textarea 
+          class="content-input"
+          placeholder="Start writing..."
+          name="content"
+          required
+        ><%= data.content%></textarea>  
+        
+        <input type="hidden" name="docid" value="<%= data.docid %>" />
+        
+        <div class="submitbox">
+          <input type="text" name="commitmsg" required>
+          <button class="submitbtn">Submit</button>
+        </div>
+      </form>
+    </div>
+    <% }else{ %>
+        <H1>no data was found</H1>
+    <% } %>
+
+    <% if (typeof notification !== "undefined") { %>
+      <div id="notification" class="notification <%= notification.type %>">
+        <%= notification.message %>
+      </div>
+    <% } %>
+
+    
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+$(function () {
+
+  $(document).on('click', '.prof', function () {
+    window.location.href = "/profile";
+  });
+
+  $(document).on('click', '.newDoc', function () {
+    window.location.href = "/new";
+  });
+
+  $(document).on('click', '.home', function () {
+    window.location.href = "/home";
+  });
+
+  $(document).on('click', '.setti', function () {
+    window.location.href = "/settings";
+  });
+
+  $(document).on('click', '.log', function () {
+    window.location.href = "/logout";
+  });
+
+
+  // Toggle menu
+  $(document).on('click', '.profile', function (e) {
+    e.stopPropagation();
+    $(".logout").toggle();
+  });
+
+  // Prevent closing when clicking inside menu
+  $(document).on('click', '.logout', function (e) {
+    e.stopPropagation();
+  });
+
+  // Close when clicking outside
+  $(document).on('click', function () {
+    $(".logout").hide();
+  });
+
+  // ////////////////notification logic
+
+  $(document).ready(function () {
+  const $notification = $("#notification");
+
+  if ($notification.length) {
+    setTimeout(function () {
+      $notification.css({
+        opacity: 0,
+        transition: "opacity 0.4s ease"
+      });
+
+      setTimeout(function () {
+        $notification.remove();
+      }, 400);
+    }, 2500);
+  }
+});
+
+
+});
+</script>
+</body>
+</html>

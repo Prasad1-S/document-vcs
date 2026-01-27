@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="css/settings.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons@3.3.1/css/all/all.min.css">
+</head>
+<body>
+   
+<!-- navbar -->
+    <div class="navbar">
+        <a href="/home" class="logo_name">Name</a>
+        <!-- link to profile -->
+        <div class="profileDetails">
+            <div class="newDoc"><i class="fi fi-br-plus"></i></div>
+            <div class="home"><i class="fi fi-br-house-chimney"></i></div>
+            <% if(imgUrl){ %>
+            <img src="<%= imgUrl %>" alt="Logo" class="profile" height="40px" referrerpolicy="no-referrer">
+            <% }else{ %>
+            <img src="../assets/github.png" alt="Logo" class="profile" height="40px" referrerpolicy="no-referrer">
+            <% } %>
+        </div>    
+    </div>
+
+    <div class="logout">
+        <button class="prof"><i class="fi fi-rr-document"></i><span>My Profile</span></button>
+        <button class="setti"><i class="fi fi-rr-settings"></i><span>Settings</span></button>
+        <button class="log"><i class="fi fi-rr-power"></i><span>Logout</span></button>
+    </div>
+
+
+    <div class="main">
+        <div class="submitBtn">
+            <button class="submit">Submit</button>
+        </div>
+
+        <div class="editContainer">
+            <div class="row row1">
+                <% if(imgUrl){ %>
+                <img src="<%= imgUrl %>" alt="Logo" class="profimg" referrerpolicy="no-referrer">
+                <% }else{ %>
+                <img src="../assets/github.png" alt="Logo" class="profimg" height="40px" referrerpolicy="no-referrer">
+                <% } %>
+                
+                <input type="file" id="upload" accept="image/*" hidden>
+                <!-- Icon button -->
+                <label for="upload" class="upload-icon">
+                    <i class="fi fi-rr-camera"></i>
+                </label>
+                
+            </div>
+            <div class="row">Profile Id: Prasad1-S <span><i class="fi fi-rr-pencil"></i></span></div>
+            <div class="row">Email Id: subhojeetprasad123@gmail.com <span><i class="fi fi-rr-pencil"></i></span></div>
+            <div class="row"></div>
+        </div>
+    </div>
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  $(function () {
+
+  $(document).on('click', '.prof', function () {
+    window.location.href = "/profile";
+  });
+
+  $(document).on('click', '.newDoc', function () {
+    window.location.href = "/new";
+  });
+
+  $(document).on('click', '.home', function () {
+    window.location.href = "/home";
+  });
+
+  $(document).on('click', '.setti', function () {
+    window.location.href = "/settings";
+  });
+
+  $(document).on('click', '.log', function () {
+    window.location.href = "/logout";
+  });
+
+  // Toggle menu
+  $(document).on('click', '.profile', function (e) {
+    e.stopPropagation();
+    $(".logout").toggle();
+  });
+
+  // Prevent closing when clicking inside menu
+  $(document).on('click', '.logout', function (e) {
+    e.stopPropagation();
+  });
+
+  // Close when clicking outside
+  $(document).on('click', function () {
+    $(".logout").hide();
+  });
+
+});
+</script>
+
+</body>
+</html>

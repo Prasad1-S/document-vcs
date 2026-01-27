@@ -1,0 +1,108 @@
+* {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+ body {
+     font-family: Arial, sans-serif;
+     background: white;
+     min-height: 100vh;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     padding: 20px;
+ }
+
+ .container {
+     max-width: 400px;
+     width: 100%;
+ }
+
+ h1 {
+     text-align: center;
+     margin-bottom: 30px;
+     font-size: 24px;
+     font-weight: normal;
+ }
+
+ .input-group {
+     margin-bottom: 20px;
+ }
+
+ label {
+     display: block;
+     margin-bottom: 8px;
+ }
+
+ input[type="text"] {
+     width: 100%;
+     padding: 10px;
+     border: 1px solid #ccc;
+     font-size: 16px;
+ }
+
+ input[type="text"]:focus {
+     outline: none;
+     border-color: #000;
+ }
+
+ .continue-btn {
+     width: 100%;
+     padding: 10px;
+     background: white;
+     border: 1px solid #000;
+     font-size: 16px;
+     cursor: pointer;
+ }
+
+ .continue-btn:hover {
+     background: #000;
+     color: white;
+ }
+
+ .avatar-section {
+     transform: translateX(-100%);
+     opacity: 0;
+     transition: transform 0.4s ease, opacity 0.4s ease;
+ }
+
+ .avatar-section.show {
+     transform: translateX(0);
+     opacity: 1;
+ }
+
+ .avatar-grid {
+     display: grid;
+     grid-template-columns: repeat(2, 1fr);
+     gap: 15px;
+     margin-top: 20px;
+ }
+
+ .avatar-option {
+     aspect-ratio: 1;
+     border: 1px solid #ccc;
+     cursor: pointer;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 50px;
+     background: white;
+ }
+
+ .avatar-option:hover {
+     border-color: #000;
+ }
+
+ .avatar-option.selected {
+     border: 2px solid #000;
+ }
+
+ .selected-username {
+     text-align: center;
+     margin-bottom: 20px;
+ }
+
+ .hidden {
+     display: none;
+ }

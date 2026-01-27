@@ -1,0 +1,210 @@
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background: #f5f5f5;
+min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+background: white;
+padding: 16px 32px;
+height: 60px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+position: sticky;
+top: 0;
+z-index: 100;
+}
+
+.profileDetails {
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+ gap: 8px;
+}
+
+.logout {
+    height: fit-content;
+    width: 200px;
+    border: 1px solid red;
+}
+.profile-wrapper {
+    position: relative;
+    display: inline-block;
+}
+.profile {
+    cursor: pointer;
+    border-radius: 50%;
+}
+/* dropdown */
+.logout {
+    position: absolute;
+    top: 55px;
+    right: 1%;
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px 0;
+    min-width: 140px;    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);    display: none;
+    z-index: 1000;
+}
+/* show on hover */
+.profile-wrapper:hover .logout {
+    display: block;
+}
+/* logout button */
+.logout button {
+    width: 100%;
+    padding: 10px 16px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+}
+.logout button:hover {
+    background-color: #f5f5f5;
+}
+.log {
+    border-top: 1px solid black;
+}
+.home {
+    margin-right: 8px;
+    margin-top: 3px;
+    font-size: 30px;
+}
+.newDoc {
+    margin-right: 8px;
+    margin-top: 3px;
+    font-size: 30px;
+}
+.logo_name {
+    font-size: 24px;
+    font-weight: 700;
+    color: #667eea;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.logo_name:hover {
+    color: #764ba2;
+}
+.logo_img {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.logo_img:hover {
+    transform: scale(1.1);
+}
+.logout {
+    display: none;
+}
+
+.CreateNew{
+    width: 250px;
+    height: 100%;
+    border: 1px solid red;
+}
+/* Main Layout */
+.main {
+    display: flex;
+    gap: 24px;
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    border: 1px solid red   ;
+    flex-direction: row;
+    align-items: center;
+    height: calc(100vh - 82px);
+}
+
+.filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.filters button {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+}
+
+.owned{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 docs per row */
+    gap: 16px;
+}
+
+.filters button.active {
+    background-color: #2563eb; /* blue */
+    color: white;
+    border-color: #2563eb;
+}
+
+.filters button:hover {
+    background-color: #f1f5f9;
+}
+
+.second{
+    border: 1px solid red;
+    height: 100%;
+    width: 100%;
+}
+
+.third{
+    border: 1px solid red;
+}
+
+.DocCard{
+    width: 100%; /* important */
+    height: 120px;
+    border: 1px solid red;
+}
+/* Responsive Design */
+@media (max-width: 968px) {
+    .main {
+        flex-direction: column;
+        height: auto;
+    }    .selector {
+        width: 100%;
+    }    .main_content {
+        min-height: 400px;
+    }
+}
+
+
+.filters {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-box input {
+    padding: 8px 12px 8px 36px; /* left space for icon */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-box i {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #777;
+    pointer-events: none; /* click passes to input */
+    font-size: 14px;
+}
