@@ -586,10 +586,12 @@ app.post("/share",isAuthenticated , async(req,res)=>{
                     // send notification about this
                     console.log("User already has access");
                 }else{
-                    res.status(303).json({message:"successfully shred document"});
+                    console.log("document shared!")
+                    return res.status(303).json({message:"successfully shred document"});
                 }
             }else{
-                res.status(401).json({message:"sorry you don't have permissions to share!"})
+                console.log("no permission to share!");
+                return res.status(401).json({message:"sorry you don't have permissions to share!"})
             }
         }else{
 

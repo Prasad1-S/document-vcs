@@ -51,6 +51,8 @@
         <% } %>
         <% } %>
 
+
+        <% if(data.isowner){ %>
         <div class="SharedWith">
           <h3>people with access:</h3>
 
@@ -94,6 +96,8 @@
             <% }); %>
           <% } %>
         </div>
+        <% } %>
+
         <div class="NewVersion">
           <div class="editbtn">Edit</div>
           <div class="sharebtn">Share</div>
