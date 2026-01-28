@@ -35,7 +35,7 @@
       <div class="docBox">
         <% if(locals.data){ %>
         <div class="title-input" data-id="<%= data.docId%>" data-version="<%= data.latestversion %>"><%= data.title %></div>
-        <div class="CreatedBy">Created By: subhojeetprasad123@gmail.com <img src="<%= data.created_by %>" alt=""></div>
+        <div class="CreatedBy"><img src="<%= data.created_by %>" alt="ownerimg"> <%= data.owner %> | <p>27 July 2025</p></div>
         <div class="content content-input"><%= data.content %></div>
         
       </div>
@@ -54,45 +54,23 @@
 
         <% if(data.isowner){ %>
         <div class="SharedWith">
-          <h3>people with access:</h3>
-
-          <!-- one person -->
-          <div class="people" data-name="Prasad1-S" data-email="subbhojeetprasad123@gmail.com">
-            <div class="r1">
-              <img src="<%= imgUrl %>" alt="" height="30px">
-              <p>Prasad1-s</p>
-              <span class="manage-access"><i class="fi fi-rr-customize"></i></span>
-            </div>
-            <div class="email">
-              <p>subhojeetprasad123@gmail.com</p>
-            </div>
-          </div>
-
-          <!-- one person -->
-          <div class="people" data-name="Prasad1-S" data-email="subbhojeetprasad123@gmail.com">
-            <div class="r1">
-              <img src="<%= imgUrl %>" alt="" height="30px">
-              <p>Prasad1-s</p>
-              <span class="manage-access"><i class="fi fi-rr-customize"></i></span>
-            </div>
-            <div class="email">
-              <p>subhojeetprasad123@gmail.com</p>
-            </div>
-          </div>
+          <h3>People With Access:</h3>
 
           <% if(locals.data.people){ %>
             <% data.people.forEach(people => { %>
+            <% if(people.role!='OWNER'){ %>
             <div class="people" data-name="<%= people.username %>" data-email="<%= people.email %>">
               <div class="r1">
                 <img src="<%= people.imgurl %>" alt="" height="30px">
-                <p><%= people.username %></p>
-                <p><%= people.role %></p>
+                <p class="Username"><%= people.username %></p>
+                <p class="role">(<%= people.role %>)</p>
                 <span class="manage-access"><i class="fi fi-rr-customize"></i></span>
               </div>
               <div class="email">
-                <p><%= people.email %></p>
+                <p class="emaiill"><i><%= people.email %></i></p>
               </div>
             </div>
+            <% } %>
             <% }); %>
           <% } %>
         </div>

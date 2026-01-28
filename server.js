@@ -296,6 +296,7 @@ app.get("/view/:id",async(req,res)=>{
                         latestversion: versionData.rows[0].versioncount,
                         docId:docId,
                         content:versionData.rows[0].content,
+                        owner:ownerData.rows[0].username,
                         created_by:ownerData.rows[0].imgurl,
                         people: people.rows,
                         isowner:owner

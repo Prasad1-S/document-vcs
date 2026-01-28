@@ -244,11 +244,18 @@ z-index: 100;
 .CreatedBy {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 8px;
   margin-bottom: 24px;
   font-size: 14px;
   color: #555;
+}
+
+.CreatedBy > .imgg{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-direction: row;
 }
 
 .CreatedBy img {
@@ -441,6 +448,20 @@ border-radius: 50%;
   cursor: pointer;
 }
 
+.role{
+font-size: 10px; 
+margin: 10px;
+}
+
+.Username{
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.emaiill{
+  font-size: 10px;
+}
+
 .share-btn:hover {
   background: #5a67d8;
 }
@@ -489,7 +510,6 @@ border-radius: 50%;
   margin-bottom: 10px;
 }
 .r1, .email{
-  border: 1px solid red;
   display: flex;  
 }
 .r1{
@@ -499,16 +519,18 @@ border-radius: 50%;
 }
 .r1 > img{
   border-radius: 50%;
+  margin-top: 2%;
   margin-left: 1px;
   margin-right: 10px;
 }
 .r1 > span{
   margin-left: auto;
+  margin-top: 2%;
 }
 .email{
   font-size: 13px;
-  justify-content: flex-start;
-  margin-left: 30px;
+  margin-top: -8px;
+  margin-left: 40px;
 }
 
 /* manage access overlay */
