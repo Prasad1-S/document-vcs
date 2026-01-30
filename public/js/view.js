@@ -205,3 +205,36 @@ roleButtons.forEach(btn => {
     }
   });
 });
+
+
+////////delete request for access amnagement
+
+const removeAccessBtn = document.querySelector(".remove-access");
+
+removeAccessBtn.addEventListener("click", async () => {
+  const email = document.getElementById("accessEmail").innerText;
+  const documentId = document.querySelector(".title-input").dataset.id;
+
+  try {
+    console.log("success");
+    const res = await fetch(`/access/${documentId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        personemail: email
+      })
+    });
+    console.log("success");
+
+    if (!res.ok) throw new Error("Failed to remove access");
+    console.log("success");
+
+    alert("Access removed successfully");
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong");
+  }
+});
+
