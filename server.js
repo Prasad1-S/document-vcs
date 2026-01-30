@@ -509,6 +509,41 @@ app.post("/edit",isAuthenticated ,async(req,res)=>{
     }
 });
 
+////////////////Access Management
+app.put("/p/:docid",isAuthenticated,async(req,res)=>{
+    const docid = req.params.docid;
+    const userid = req.user.userid;//check if this is the owner of the document if not then reject req
+    console.log(docid);
+    try {
+        const owner = await pool.query(
+            "SELECT * FROM documents WHERE docid=$1;",
+            [docid]
+        )
+        if (owner.rowCount==0) return res.status(404).json({message:"The Document Doesn't exist"});
+        if (owner.rows[0].ownerid!= userid) return res.status(401).json({message:"Unauthorized Access!"});
+
+        const {role, personemail} = req.body;
+        const newRole = role;
+        console.log(personemail, newRole);
+        const person = await pool.query(
+            "SELECT * FROM users WHERE email=$1",
+            [personemail]
+        )
+        console.log("success1")
+        if(person.rowCount==0) return res.status(404).json({message:"The user doesn't exist!"});
+        console.log("success2")
+        const personid = person.rows[0].userid;        
+        const update = await pool.query(
+            "UPDATE access SET role=$1 WHERE userid=$2 AND docid=$3;",
+            [newRole,personid,docid]
+        )
+        console.log("success3")
+        return res.status(200).json({message:"Successfully Updated Access!"});
+    } catch (err) {
+        console.log(err);
+    }
+});
+
 
 app.delete("/doc/:docid",isAuthenticated, async(req,res)=>{
     const docid = req.params.docid;

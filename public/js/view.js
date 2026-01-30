@@ -176,3 +176,32 @@ confirmDelete.addEventListener("click", () => {
     window.location.href = "/home";
   });
 });
+
+/////////////////Put Request////////////////
+
+const roleButtons = document.querySelectorAll(".role-btn");
+roleButtons.forEach(btn => {
+  btn.addEventListener("click", async () => {
+    const role = btn.dataset.role; // EDITOR or VIEWER
+    console.log(role);
+    const email = document.getElementById("accessEmail").innerText;
+    const documentId = document.querySelector(".title-input").dataset.id; // set this when opening access box
+    try {
+      const res = await fetch(`/p/${documentId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          personemail: email,
+          role: role
+        })
+      });
+      if (!res.ok) throw new Error("Failed to update role");
+      alert(`Access updated to ${role}`);
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
+    }
+  });
+});
