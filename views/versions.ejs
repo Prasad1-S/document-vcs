@@ -7,7 +7,6 @@
 
   <link rel="stylesheet" href="/css/versions.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons@3.3.1/css/all/all.min.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
@@ -41,13 +40,14 @@
     <div class="vh-header">
       <h2>Version History</h2>
       <p><strong>Current:</strong> v<%= currentVersion %></p>
+    <button id="rollbackBtn" class="rollback-btn">Rollback</button>
     </div>
 
     <% if (versions && versions.length) { %>
       <% versions.forEach(v => { %>
 
         <div class="vh-card <%= v.isCurrent ? 'current' : '' %>"
-             data-id="<%= docid%>%>"
+             data-id="<%= docid%>"
              data-title="<%= v.title %>"
              data-content="<%- v.content %>"
              data-version="<%= v.versionCount %>"
@@ -97,36 +97,35 @@
 
   </div>
 
+  <!-- Rollback confirmation modal content -->
+<div id="rollbackModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h2>Confirm Rollback</h2>
+
+    <p class="warning">
+      ⚠️ This action <strong>cannot be undone</strong>.
+    </p>
+
+    <p>
+      This will rollback the document to:
+    </p>
+
+    <div class="version-info">
+      <p><strong>Version:</strong> <span id="versionNumber"></span></p>
+      <p><strong>Version Name:</strong> <span id="versionName"></span></p>
+      <p><strong>Last Edited By:</strong> <span id="lastEditedBy"></span></p>
+    </div>
+
+    <div class="modal-actions">
+      <button id="cancelRollback" class="btn secondary">Cancel</button>
+      <button id="confirmRollback" class="btn danger">Yes, Rollback</button>
+    </div>
+  </div>
+</div>
+
 </main>
 
-<script>
-$(function () {
-
-  // NAV
-  $('.prof').click(()=>location.href='/profile');
-  $('.newDoc').click(()=>location.href='/new');
-  $('.home').click(()=>location.href='/home');
-  $('.setti').click(()=>location.href='/settings');
-  $('.log').click(()=>location.href='/logout');
-
-  $('.profile').click(e=>{
-    e.stopPropagation();
-    $('.logout').toggle();
-  });
-
-  $(document).click(()=>$('.logout').hide());
-  $('.logout').click(e=>e.stopPropagation());
-
-  // VERSION PREVIEW
-  $('.vh-card').on('click', function () {
-    const docid=$(this).data("id");
-    const version=$(this).data("version");
-    console.log(version);
-    window.location=`/${docid}/v/${version}`
-  });
-
-});
-</script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/version.js"></script>
 </body>
 </html>
