@@ -188,6 +188,7 @@ app.get("/:docid/v/:id",async(req,res)=>{
               v.versionid,
               v.versioncount,
               v.commitmsg,
+              v.content,
               v.createdat,
               u.username,
               u.imgurl,
@@ -206,6 +207,7 @@ app.get("/:docid/v/:id",async(req,res)=>{
         const versions = versiondata.rows.map(row => ({
           versionCount: row.versioncount,
           summary: row.commitmsg || "No description provided",
+          content: row.content,
           updatedAt: row.createdat,
           isCurrent: row.versionid === row.latestversion,
           editor: {
@@ -414,6 +416,131 @@ app.post("/new",isAuthenticated, async(req,res)=>{
         client.release();
     }
 });
+
+////////Rollback Post endpoint
+
+app.post('/rollback/:docid/:version', isAuthenticated, async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    const { docid, version } = req.params;
+    const userid = req.user.userid;
+
+    await client.query('BEGIN');
+
+    /* 1️⃣ Permission check (OWNER / EDITOR) */
+    const accessCheck = await client.query(
+      `
+      SELECT role
+      FROM access
+      WHERE userid = $1 AND docid = $2
+      `,
+      [userid, docid]
+    );
+
+    if (
+      accessCheck.rowCount === 0 ||
+      !['OWNER', 'EDITOR'].includes(accessCheck.rows[0].role)
+    ) {
+      throw new Error('Permission denied');
+    }
+
+    /* 2️⃣ Fetch document + latest version */
+    const docResult = await client.query(
+      `
+      SELECT latestversion
+      FROM documents
+      WHERE docid = $1
+      `,
+      [docid]
+    );
+
+    if (docResult.rowCount === 0) {
+      throw new Error('Document not found');
+    }
+
+    const latestVersionId = docResult.rows[0].latestversion;
+
+    /* 3️⃣ Fetch target version */
+    const targetVersion = await client.query(
+      `
+      SELECT versionid, versioncount, content
+      FROM versions
+      WHERE docid = $1 AND versioncount = $2
+      `,
+      [docid, version]
+    );
+
+    if (targetVersion.rowCount === 0) {
+      throw new Error('Target version does not exist');
+    }
+
+    if (targetVersion.rows[0].versionid === latestVersionId) {
+      throw new Error('Document is already on this version');
+    }
+
+    /* 4️⃣ Get next version number */
+    const nextVersionCountResult = await client.query(
+      `
+      SELECT COALESCE(MAX(versioncount), 0) + 1 AS nextversion
+      FROM versions
+      WHERE docid = $1
+      `,
+      [docid]
+    );
+
+    const nextVersionCount = nextVersionCountResult.rows[0].nextversion;
+
+    /* 5️⃣ Insert new version (rollback commit) */
+    const insertVersion = await client.query(
+      `
+      INSERT INTO versions (docid, versioncount, content, createdby, commitmsg)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING versionid
+      `,
+      [
+        docid,
+        nextVersionCount,
+        targetVersion.rows[0].content,
+        userid,
+        `rolled back document to version v${version}`
+      ]
+    );
+
+    const newVersionId = insertVersion.rows[0].versionid;
+
+    /* 6️⃣ Update document latestversion */
+    await client.query(
+      `
+      UPDATE documents
+      SET latestversion = $1, updatedat = now()
+      WHERE docid = $2
+      `,
+      [newVersionId, docid]
+    );
+
+    await client.query('COMMIT');
+
+    console.log(docid, version, 'successful rollback');
+
+    res.json({
+      success: true,
+      redirectUrl: '/home'
+    });
+
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('Rollback error:', error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  } finally {
+    client.release();
+  }
+});
+
 
 app.post("/edit",isAuthenticated ,async(req,res)=>{
     // does have access to edit? -- 'display access error' ---DONE

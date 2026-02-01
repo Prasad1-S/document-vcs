@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Version History</title>
-
+  <title>Version History - <%= title %></title>
   <link rel="stylesheet" href="/css/versions.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons@3.3.1/css/all/all.min.css">
 </head>
@@ -16,11 +15,10 @@
   <div class="profileDetails">
     <div class="newDoc"><i class="fi fi-br-plus"></i></div>
     <div class="home"><i class="fi fi-br-house-chimney"></i></div>
-
     <% if(imgUrl){ %>
-      <img src="<%= imgUrl %>" class="profile" height="40">
+      <img src="<%= imgUrl %>" class="profile" height="40" alt="Profile">
     <% } else { %>
-      <img src="../assets/github.png" class="profile" height="40">
+      <img src="../assets/github.png" class="profile" height="40" alt="Profile">
     <% } %>
   </div>
 </div>
@@ -32,98 +30,125 @@
   <button class="log"><i class="fi fi-rr-power"></i><span>Logout</span></button>
 </div>
 
-<main class="version-history vh-layout">
+<main class="version-history">
 
-  <!-- LEFT: VERSION SLIDER -->
-  <div class="vh-list">
-
-    <div class="vh-header">
+  <!-- LEFT: VERSION LIST -->
+  <aside class="versions-sidebar">
+    <div class="sidebar-header">
       <h2>Version History</h2>
-      <p><strong>Current:</strong> v<%= currentVersion %></p>
-    <button id="rollbackBtn" class="rollback-btn">Rollback</button>
+      <p class="current-version">Current: <strong>v<%= currentVersion %></strong></p>
     </div>
 
-    <% if (versions && versions.length) { %>
-      <% versions.forEach(v => { %>
+    <div class="versions-list">
+      <% if (versions && versions.length) { %>
+        <% versions.forEach(v => { %>
+          <article class="version-card <%= v.isCurrent ? 'is-current' : '' %>"
+                   data-docid="<%= docid %>"
+                   data-version="<%= v.versionCount %>"
+                   data-title="<%= v.title %>"
+                   data-editor="<%= v.editor.name %>"
+                   data-editor-img="<%= v.editor.imgUrl %>"
+                   data-time="<%= v.updatedAt %>"
+                   data-summary="<%= v.summary %>">
 
-        <div class="vh-card <%= v.isCurrent ? 'current' : '' %>"
-             data-id="<%= docid%>"
-             data-title="<%= v.title %>"
-             data-content="<%- v.content %>"
-             data-version="<%= v.versionCount %>"
-             data-editor="<%= v.editor.name %>"
-             data-time="<%= v.updatedAt %>"
-             data-id="<%=v.versionCount%>">
-
-          <div class="vh-avatar">
-            <img src="<%= v.editor.imgUrl %>" />
-          </div>
-
-          <div class="vh-info">
-            <div class="vh-title">
-              <span>v<%= v.versionCount %></span>
-              <% if (v.isCurrent) { %>
-                <span class="badge">Current</span>
-              <% } %>
+            <div class="version-card-header">
+              <div class="version-avatar">
+                <img src="<%= v.editor.imgUrl %>" alt="<%= v.editor.name %>">
+              </div>
+              <div class="version-meta">
+                <div class="version-number">
+                  v<%= v.versionCount %>
+                  <% if (v.isCurrent) { %>
+                    <span class="badge-current">Current</span>
+                  <% } %>
+                </div>
+                <div class="version-author"><%= v.editor.name %></div>
+                <div class="version-time"><%= v.updatedAt %></div>
+              </div>
             </div>
 
-            <p class="summary"><%= v.summary %></p>
+            <% if (v.summary) { %>
+              <p class="version-summary"><%= v.summary %></p>
+            <% } %>
 
-            <small>
-              <strong><%= v.editor.name %></strong> • <%= v.updatedAt %>
-            </small>
-          </div>
+            <div class="version-content" style="display:none;"><%- v.content %></div>
 
-        </div>
-
-      <% }) %>
-    <% } else { %>
-      <p>No versions yet.</p>
-    <% } %>
-
-  </div>
+            <div class="version-actions">
+              <% if (!v.isCurrent) { %>
+                <button class="btn-rollback" type="button">
+                  <i class="fi fi-rr-time-past"></i> Rollback
+                </button>
+              <% } %>
+            </div>
+          </article>
+        <% }) %>
+      <% } else { %>
+        <p class="no-versions">No version history available.</p>
+      <% } %>
+    </div>
+  </aside>
 
   <!-- RIGHT: VERSION PREVIEW -->
-  <div class="vh-preview">
-
+  <section class="preview-panel">
     <div class="preview-header">
-      <h3 id="preview-title"><%= title %></h3>
-      <small id="preview-meta">—</small>
+      <div class="preview-title-area">
+        <h3 id="previewTitle"><%= title %></h3>
+      </div>
     </div>
 
-    <div class="preview-content" id="preview-content">
-      <p><%= currentcontent %></p>
+    <div class="preview-body">
+      <div id="previewContent" class="preview-content">
+        <%- currentcontent %>
+      </div>
     </div>
+  </section>
 
-  </div>
+</main>
 
-  <!-- Rollback confirmation modal content -->
-<div id="rollbackModal" class="modal-overlay hidden">
-  <div class="modal">
-    <h2>Confirm Rollback</h2>
+<!-- Rollback Confirmation Modal -->
+<div id="rollbackModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Confirm Rollback</h2>
+        <button class="modal-close" id="closeModal" aria-label="Close">
+          <i class="fi fi-rr-cross"></i>
+        </button>
+      </div>
 
-    <p class="warning">
-      ⚠️ This action <strong>cannot be undone</strong>.
-    </p>
+      <div class="modal-body">
+        <div class="warning-banner">
+          <i class="fi fi-rr-triangle-warning"></i>
+          <p><strong>Warning:</strong> This action cannot be undone. The current version will be replaced.</p>
+        </div>
 
-    <p>
-      This will rollback the document to:
-    </p>
+        <div class="rollback-info">
+          <h3>Rolling back to:</h3>
+          <dl>
+            <dt>Version:</dt>
+            <dd id="modalVersion">—</dd>
 
-    <div class="version-info">
-      <p><strong>Version:</strong> <span id="versionNumber"></span></p>
-      <p><strong>Version Name:</strong> <span id="versionName"></span></p>
-      <p><strong>Last Edited By:</strong> <span id="lastEditedBy"></span></p>
-    </div>
+            <dt>Summary:</dt>
+            <dd id="modalSummary">—</dd>
 
-    <div class="modal-actions">
-      <button id="cancelRollback" class="btn secondary">Cancel</button>
-      <button id="confirmRollback" class="btn danger">Yes, Rollback</button>
+            <dt>Last Edited By:</dt>
+            <dd id="modalEditor">—</dd>
+
+            <dt>Date:</dt>
+            <dd id="modalTime">—</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancelRollback">Cancel</button>
+        <button class="btn btn-danger" id="confirmRollback">
+          <i class="fi fi-rr-time-past"></i> Confirm Rollback
+        </button>
+      </div>
     </div>
   </div>
 </div>
-
-</main>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/js/version.js"></script>

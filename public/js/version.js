@@ -1,84 +1,188 @@
 $(function () {
+  'use strict';
 
-  // NAV
-  $('.prof').click(()=>location.href='/profile');
-  $('.newDoc').click(()=>location.href='/new');
-  $('.home').click(()=>location.href='/home');
-  $('.setti').click(()=>location.href='/settings');
-  $('.log').click(()=>location.href='/logout');
+  // ============================================================================
+  // NAVIGATION HANDLERS
+  // ============================================================================
+  
+  const navigation = {
+    init() {
+      $('.prof').on('click', () => location.href = '/profile');
+      $('.newDoc').on('click', () => location.href = '/new');
+      $('.home').on('click', () => location.href = '/home');
+      $('.setti').on('click', () => location.href = '/settings');
+      $('.log').on('click', () => location.href = '/logout');
 
-  $('.profile').click(e=>{
-    e.stopPropagation();
-    $('.logout').toggle();
-  });
+      // Profile menu toggle
+      $('.profile').on('click', (e) => {
+        e.stopPropagation();
+        $('.logout').toggle();
+      });
 
-  $(document).click(()=>$('.logout').hide());
-  $('.logout').click(e=>e.stopPropagation());
-
-  // VERSION PREVIEW
-  $('.vh-card').on('click', function () {
-    const docid=$(this).data("id");
-    const version=$(this).data("version");
-    console.log(version);
-    window.location=`/${docid}/v/${version}`
-  });
-
-  const rollbackBtn = document.getElementById("rollbackBtn");
-const modal = document.getElementById("rollbackModal");
-
-const cancelBtn = document.getElementById("cancelRollback");
-const confirmBtn = document.getElementById("confirmRollback");
-
-// Example version data (replace dynamically)
-const versionData = {
-  number: "v12",
-  name: "Added sharing logic",
-  editedBy: "ananyaghosh@gmail.com"
-};
-
-let selectedVersion = null;
-
-// when a version card is clicked, store its info
-$('.vh-card').on('click', function () {
-  selectedVersion = {
-    version: $(this).data('version'),
-    editor: $(this).data('editor'),
-    name: $(this).find('.summary').text().trim()
+      // Close menu on outside click
+      $(document).on('click', () => $('.logout').hide());
+      $('.logout').on('click', (e) => e.stopPropagation());
+    }
   };
 
-  console.log("Selected version:", selectedVersion);
-});
+  // ============================================================================
+  // VERSION PREVIEW SYSTEM
+  // ============================================================================
+  
+  const versionPreview = {
+    currentVersion: null,
 
-// rollback button
-$('#rollbackBtn').on('click', function () {
-  if (!selectedVersion) {
-    alert("Please select a version to rollback to.");
-    return;
+    init() {
+      this.bindEvents();
+    },
+
+    bindEvents() {
+      // Click on card to select and preview
+      $('.version-card').on('click', (e) => {
+        // Don't trigger if clicking rollback button
+        if ($(e.target).closest('.btn-rollback').length) {
+          return;
+        }
+        const $card = $(e.currentTarget);
+        this.selectVersion($card);
+      });
+    },
+
+    selectVersion($card) {
+      // Update UI
+      $('.version-card').removeClass('selected');
+      $card.addClass('selected');
+
+      // Store current selection
+      this.currentVersion = this.extractVersionData($card);
+
+      // Update preview panel
+      this.updatePreview(this.currentVersion);
+    },
+
+    extractVersionData($card) {
+      return {
+        docid: $card.data('docid'),
+        version: $card.data('version'),
+        title: $card.data('title'),
+        content: $card.find('.version-content').html(),
+        editor: $card.data('editor'),
+        editorImg: $card.data('editor-img'),
+        time: $card.data('time'),
+        summary: $card.data('summary'),
+        isCurrent: $card.hasClass('is-current')
+      };
+    },
+
+    updatePreview(versionData) {
+      $('#previewTitle').text(versionData.title);
+      $('#previewContent').html(versionData.content);
+    },
+
+
+  };
+
+  // ============================================================================
+  // ROLLBACK SYSTEM
+  // ============================================================================
+  
+  const rollbackSystem = {
+    $modal: null,
+    selectedVersion: null,
+
+    init() {
+      this.$modal = $('#rollbackModal');
+      this.bindEvents();
+    },
+
+    bindEvents() {
+      // Rollback button on version cards
+      $('.btn-rollback').on('click', (e) => {
+        e.stopPropagation();
+        const $card = $(e.currentTarget).closest('.version-card');
+        this.openModal($card);
+      });
+
+      // Modal actions
+      $('#cancelRollback, #closeModal').on('click', () => this.closeModal());
+      $('#confirmRollback').on('click', () => this.confirmRollback());
+
+      // Close modal on overlay click
+      this.$modal.on('click', (e) => {
+        if ($(e.target).hasClass('modal-overlay')) {
+          this.closeModal();
+        }
+      });
+
+      // ESC key to close modal
+      $(document).on('keydown', (e) => {
+        if (e.key === 'Escape' && this.$modal.attr('aria-hidden') === 'false') {
+          this.closeModal();
+        }
+      });
+    },
+
+    openModal($card) {
+      this.selectedVersion = versionPreview.extractVersionData($card);
+      this.populateModal(this.selectedVersion);
+      this.showModal();
+    },
+
+    populateModal(versionData) {
+      $('#modalVersion').text(`v${versionData.version}`);
+      $('#modalSummary').text(versionData.summary || 'No summary available');
+      $('#modalEditor').text(versionData.editor);
+      $('#modalTime').text(versionData.time);
+    },
+
+    showModal() {
+      this.$modal.attr('aria-hidden', 'false').fadeIn(200);
+      $('body').css('overflow', 'hidden');
+    },
+
+    closeModal() {
+      this.$modal.attr('aria-hidden', 'true').fadeOut(200);
+      $('body').css('overflow', '');
+    },
+
+    confirmRollback() {
+      if (!this.selectedVersion) {
+        console.error('No version selected for rollback');
+        return;
+      }
+
+      console.log('Rolling back to version:', this.selectedVersion);
+
+      // Send rollback request
+      $.ajax({
+        url: `/rollback/${this.selectedVersion.docid}/${this.selectedVersion.version}`,
+        method: 'POST',
+        success: (response) => {
+          console.log('Rollback successful:', response);
+          // Redirect to document or refresh page
+          window.location.href = `/home`;
+        },
+        error: (xhr, status, error) => {
+          console.error('Rollback failed:', error);
+          alert('Failed to rollback. Please try again.');
+          this.closeModal();
+        }
+      });
+    }
+  };
+
+  // ============================================================================
+  // INITIALIZATION
+  // ============================================================================
+  
+  navigation.init();
+  versionPreview.init();
+  rollbackSystem.init();
+
+  // Auto-select and preview the current version on load
+  const $currentCard = $('.version-card.is-current');
+  if ($currentCard.length) {
+    versionPreview.selectVersion($currentCard);
   }
 
-  $('#versionNumber').text('v' + selectedVersion.version);
-  $('#versionName').text(selectedVersion.name || '—');
-  $('#lastEditedBy').text(selectedVersion.editor);
-
-  $('#rollbackModal').removeClass('hidden');
 });
-
-// cancel
-$('#cancelRollback').on('click', function () {
-  $('#rollbackModal').addClass('hidden');
-});
-
-// confirm
-$('#confirmRollback').on('click', function () {
-  $('#rollbackModal').addClass('hidden');
-
-  console.log("ROLLBACK CONFIRMED:", selectedVersion);
-
-  // 🔥 backend call goes here
-  // POST /rollback/:docid/:version
-});
-
-
-});
-
-
