@@ -24,7 +24,7 @@ $(document).on('click', '.prof', function (e) {
 });
 
 $(document).on('click', '.newDoc', function(e){
-    window.location.href="/new";
+    window.location.href="document/new";
 });
 
 $(document).on('click','.home', function(e){
@@ -77,7 +77,7 @@ document.querySelectorAll(".DocCard").forEach(card => {
   card.addEventListener("click", () => {
     const docId = card.dataset.docId;
 
-    window.location.href = `/view/${docId}`;
+    window.location.href = `document/view/${docId}`;
   });
 });
 
