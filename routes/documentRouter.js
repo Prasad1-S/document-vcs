@@ -1,6 +1,9 @@
 import express from "express";
-const router = express.Router();
 import { isAuthenticated } from "../middleware/auth.js";
+
+import { renderNewDocPage } from "../../controllers/document.js";
+const router = express.Router();
+
 
 router.get("/edit/:id",async(req,res)=>{
     if(req.isAuthenticated()){
@@ -50,13 +53,7 @@ router.get("/edit/:id",async(req,res)=>{
     }
 });
 
-router.get("/new",(req,res)=>{
-    if(req.isAuthenticated()){
-        res.render("newdoc.ejs",{imgUrl: req.user.imgurl});
-    }else{
-        res.render("loginRegister.ejs",{data:"Authentication required, Please login first!"});
-    }
-});
+router.get("/new",renderNewDocPage);
 
 router.get("/:docid/v/:id",async(req,res)=>{
     if(req.isAuthenticated()){

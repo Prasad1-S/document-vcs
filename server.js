@@ -9,6 +9,7 @@ import session from "express-session";
 import { Resend } from 'resend';
 import documentRouter from "./routes/documentRouter.js";
 import { isAuthenticated } from "./middleware/auth.js";
+import { ensureProfileComplete } from "./middleware/profile.js";
 
 
 
@@ -161,12 +162,6 @@ app.get("/set-username", (req, res) => {
 ///////////////////////Authentication Function (MIDDLEWARE) /////////////////////////////
 
 
-function ensureProfileComplete(req, res, next) {
-  if (!req.user.iscomplete) {
-    return res.redirect("/set-username");
-  }
-  next();
-}
 
 ////////////////////////POST routes for recieving data/////////////////////////
 
