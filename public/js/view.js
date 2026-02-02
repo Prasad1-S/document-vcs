@@ -35,7 +35,7 @@ $(function () {
   $(document).on("click",".btn", function(){
     const dataId = $(".title-input").data("id");
     const version = $(".title-input").data("version")
-    window.location.href=`/${dataId}/v/${version}`;
+    window.location.href=`/document/${dataId}/v/${version}`;
   });
 
   $(document).on("click", ".overlay", function () {
@@ -107,7 +107,7 @@ $(document).on("click", ".share-btn", async function () {
 
 $(document).on("click", ".editbtn", function () {
   const dataId = $(".title-input").data("id"); // ✅ FIX
-  window.location.href = `/edit/${dataId}`;
+  window.location.href = `/document/edit/${dataId}`;
 });
 
 
@@ -187,7 +187,7 @@ roleButtons.forEach(btn => {
     const email = document.getElementById("accessEmail").innerText;
     const documentId = document.querySelector(".title-input").dataset.id; // set this when opening access box
     try {
-      const res = await fetch(`/p/${documentId}`, {
+      const res = await fetch(`document/p/${documentId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
