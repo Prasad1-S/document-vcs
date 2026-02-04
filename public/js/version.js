@@ -155,7 +155,7 @@ $(function () {
 
       // Send rollback request
       $.ajax({
-        url: `/rollback/${this.selectedVersion.docid}/${this.selectedVersion.version}`,
+        url: `/document/rollback/${this.selectedVersion.docid}/${this.selectedVersion.version}`,
         method: 'POST',
         success: (response) => {
           console.log('Rollback successful:', response);
