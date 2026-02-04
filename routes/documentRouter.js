@@ -5,7 +5,7 @@ import { renderNewDocPage } from "../controllers/document.js";
 import {showDocumentContent} from "../controllers/document.js"
 const router = express.Router();
 
-
+// refactored
 router.get("/edit/:id",async(req,res)=>{
     if(req.isAuthenticated()){
         const docId = req.params.id;
@@ -54,8 +54,10 @@ router.get("/edit/:id",async(req,res)=>{
     }
 });
 
+// refactored
 router.get("/new",renderNewDocPage);
 
+// refactored
 router.get("/:docid/v/:id",async(req,res)=>{
     if(req.isAuthenticated()){
         // write the db fetch data
@@ -133,9 +135,10 @@ router.get("/:docid/v/:id",async(req,res)=>{
     }
 });
 
+// refactored
 router.get("/view/:id",showDocumentContent);
 
-
+// refactored
 router.post("/new",isAuthenticated, async(req,res)=>{
     const{title, content, commitmsg} = req.body;
     const Userid = req.user.userid;
@@ -176,7 +179,7 @@ router.post("/new",isAuthenticated, async(req,res)=>{
 });
 
 ////////Rollback Post endpoint
-
+//////refactored
 router.post('/rollback/:docid/:version', isAuthenticated, async (req, res) => {
   const client = await pool.connect();
 
@@ -299,7 +302,7 @@ router.post('/rollback/:docid/:version', isAuthenticated, async (req, res) => {
   }
 });
 
-
+// refactored
 router.post("/edit",isAuthenticated ,async(req,res)=>{
     // does have access to edit? -- 'display access error' ---DONE
     // get document from client  ----------------------------DONE
@@ -395,7 +398,8 @@ router.post("/edit",isAuthenticated ,async(req,res)=>{
 });
 
 ////////////////Access Management
-router.put("/p/:docid",isAuthenticated,async(req,res)=>{
+// refactored
+router.put("/share/:docid",isAuthenticated,async(req,res)=>{
     const docid = req.params.docid;
     const userid = req.user.userid;//check if this is the owner of the document if not then reject req
     console.log(docid);
@@ -430,6 +434,7 @@ router.put("/p/:docid",isAuthenticated,async(req,res)=>{
 });
 
 //////////DELETE DOCUMENT
+// refactored
 router .delete("/:docid",isAuthenticated, async(req,res)=>{
     const docid = req.params.docid;
     const userid = req.user.userid;

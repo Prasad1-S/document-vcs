@@ -187,7 +187,7 @@ roleButtons.forEach(btn => {
     const email = document.getElementById("accessEmail").innerText;
     const documentId = document.querySelector(".title-input").dataset.id; // set this when opening access box
     try {
-      const res = await fetch(`document/p/${documentId}`, {
+      const res = await fetch(`document/share/${documentId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
