@@ -1,40 +1,35 @@
 import express from "express";
 import { isAuthenticated } from "../middleware/auth.js";
-import { pool } from "../db.js";
-import { CreateNewVersion, DeleteDocument, DocumentVersionRollback, NewDocumentPost, renderNewDocPage } from "../controllers/document.js";
-import {showDocumentContent} from "../controllers/document.js";
-import { ShowDocumentVersions } from "../controllers/document.js";
-import { ShareDocument } from "../controllers/document.js";
-import { ShowEditPage } from "../controllers/document.js";
+import * as DocController from "../controllers/document.js"
 const router = express.Router();
 
 
 // refactored
-router.get("/new",renderNewDocPage);
+router.get("/new",isAuthenticated , DocController.renderNewDocPage);
 
 // refactored
-router.get("/:docid/v/:id",ShowDocumentVersions);
+router.get("/:docid/v/:id",isAuthenticated , DocController.ShowDocumentVersions);
 
 // refactored
-router.get("/view/:id",showDocumentContent);
+router.get("/view/:id",isAuthenticated , DocController.showDocumentContent);
 
 // refactored
-router.get("/edit/:id",ShowEditPage);
+router.get("/edit/:id",isAuthenticated , DocController.ShowEditPage);
 
 // refactored
-router.post("/new",isAuthenticated, NewDocumentPost);
+router.post("/new",isAuthenticated, DocController.NewDocumentPost);
 
 //////refactored
-router.post('/rollback/:docid/:version', isAuthenticated, DocumentVersionRollback);
+router.post('/rollback/:docid/:version', isAuthenticated, DocController.DocumentVersionRollback);
 
 // refactored
-router.post("/edit",isAuthenticated ,CreateNewVersion);
+router.post("/edit",isAuthenticated , DocController.CreateNewVersion);
 
 // refactored
-router.put("/share/:docid",isAuthenticated,ShareDocument);
+router.put("/share/:docid",isAuthenticated, DocController.ShareDocument);
 
 // refactored
-router.delete("/:docid",isAuthenticated, DeleteDocument);
+router.delete("/:docid",isAuthenticated, DocController.DeleteDocument);
 
 
 export default router;

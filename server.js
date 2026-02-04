@@ -3,13 +3,14 @@ import bcrypt from "bcrypt";
 import passport from "passport";
 import { Strategy } from "passport-local";
 import GoogleStrategy from "passport-google-oauth2";
-import { pool } from "./db.js";
+import { pool } from "./model/db.js";
 import env from "dotenv";
 import session from "express-session";
 import { Resend } from 'resend';
 import documentRouter from "./routes/documentRouter.js";
 import { isAuthenticated } from "./middleware/auth.js";
 import { ensureProfileComplete } from "./middleware/profile.js";
+import * as Serve from "./controllers/ServeEjs.js"
 
 
 
@@ -42,81 +43,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 ////////////////GET routes for serving ejs templates///////////////////////
-app.get("/",(req,res)=>{
-    res.render("loginRegister.ejs");
-});
 
-app.get("/home",ensureProfileComplete ,async(req,res)=>{
-    if(req.isAuthenticated()){
-        const Userid = req.user.userid;
-        try {
-            const data = await pool.query(
-                `SELECT d.docid, d.title, d.updatedat, d.ownerid, da.role 
-                FROM documents d 
-                JOIN access da 
-                ON d.docid = da.docid 
-                WHERE da.userid = $1;`,
-                [Userid]
-            );
-        
-            let notification;
-            if (req.query.success === "edit_saved") {
-              notification = {
-                message: "Edit saved successfully",
-                type: "success"
-              };
-            }
+// refactored
+app.get("/",(req,res)=>{res.render("loginRegister.ejs");});
 
-            res.render("landing.ejs",{imgUrl: req.user.imgurl, data:data.rows, notification});
+// refactored
+app.get("/home",ensureProfileComplete,isAuthenticated ,Serve.LandingPage);
 
-        } catch (err) {
-            console.log(err);
-        }
-    }else{
-        res.render("loginRegister.ejs",{data:"Authentication required, Please login first!"});
-    }
-});
+// refactored
+app.get("/profile",isAuthenticated , Serve.ProfilePage);
 
-
-app.get("/profile",async(req,res)=>{
-    if(req.isAuthenticated()){
-        const userid= req.user.userid;
-        try {
-            const created = await pool.query(
-                "SELECT COUNT(*) AS total_created FROM access WHERE userid=$1 AND role='OWNER';",
-                [userid]
-            )
-
-            const shared = await pool.query(
-                "SELECT COUNT(*) AS total_shared FROM access WHERE userid=$1 AND role in ('EDITOR','VIEWER');",
-                [userid]
-            )
-
-            const data = {
-                username:req.user.username,
-                email:req.user.email,
-                created:created.rows[0].total_created,
-                shared:shared.rows[0].total_shared
-            }
-
-            res.render("profile.ejs",{data,imgUrl: req.user.imgurl});
-
-        } catch (err) {
-            console.log(err);
-        }
-        
-    }else{
-        res.render("loginRegister.ejs",{data:"Authentication required, Please login first!"});
-    }
-});
-
-app.get("/settings",(req,res)=>{
-    if(req.isAuthenticated()){
-        res.render("settings.ejs",{imgUrl: req.user.imgurl});
-    }else{
-        res.render("loginRegister.ejs",{data:"Authentication required, Please login first!"});
-    }
-});
+// refactored
+app.get("/settings",isAuthenticated, Serve.SettingsPage);
 
 
 app.get(
@@ -147,17 +85,7 @@ app.get("/logout",(req,res)=>{
 
 
 // username setupt
-app.get("/set-username", (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect("/");
-  }
-
-  if (req.user.is_profile_complete) {
-    return res.redirect("/home");
-  }
-
-  res.render("username.ejs", { imgUrl: req.user.imgurl });
-});
+app.get("/set-username",isAuthenticated ,Serve.SetUsername);
 
 ///////////////////////Authentication Function (MIDDLEWARE) /////////////////////////////
 

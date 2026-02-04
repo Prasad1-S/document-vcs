@@ -1,17 +1,13 @@
-import { pool } from "../db.js";
+import { pool } from "../model/db.js";
 
 //////////renderNewDocPage
 export function renderNewDocPage(req,res){
-    if(req.isAuthenticated()){
-        res.render("newdoc.ejs",{imgUrl: req.user.imgurl});
-    }else{
-        res.render("loginRegister.ejs",{data:"Authentication required, Please login first!"});
-    }
+    res.render("newdoc.ejs",{imgUrl: req.user.imgurl});
 }
 
 /////////showDocumentContent
 export async function showDocumentContent(req,res){
-    if(req.isAuthenticated()){
+    
         const docId = req.params.id;
         const userId = req.user.userid;
 
@@ -78,15 +74,12 @@ export async function showDocumentContent(req,res){
         } catch (err) {
             console.log(err);
         }
-    
-    }else{
-        res.render("loginRegister.ejs",{data:"Authentication required, Please login first!"});
-    }
+ 
 }
 
 ///////////// ShowDocumentVersions
 export async function ShowDocumentVersions(req,res){
-    if(req.isAuthenticated()){
+    
             // write the db fetch data
             // send the result back to the user
             const docid = req.params.docid;
@@ -156,10 +149,6 @@ export async function ShowDocumentVersions(req,res){
                 currentcontent:selectedVersion.content
             })
     
-    
-        }else{
-            res.render("loginRegister.ejs",{data:"Authentication required, Please login first!"});
-        }
 }
 
 //////////ShareDocument
@@ -199,7 +188,6 @@ export async function ShareDocument(req,res) {
 
 ///////////ShowEditPage
 export async function ShowEditPage(req,res){
-        if(req.isAuthenticated()){
             const docId = req.params.id;
             console.log(docId);
             const userId = req.user.userid;
@@ -241,9 +229,7 @@ export async function ShowEditPage(req,res){
             } catch (err) {
                 console.log(err);
             }
-        }else{
-            res.render("loginRegister.ejs",{data:"Authentication required, Please login first!"});
-        }
+
 }
 
 /////////NewDocumentPost
