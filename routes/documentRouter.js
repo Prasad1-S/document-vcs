@@ -430,7 +430,7 @@ router.put("/p/:docid",isAuthenticated,async(req,res)=>{
 });
 
 //////////DELETE DOCUMENT
-router .delete("/doc/:docid",isAuthenticated, async(req,res)=>{
+router .delete("/:docid",isAuthenticated, async(req,res)=>{
     const docid = req.params.docid;
     const userid = req.user.userid;
     console.log("delete route got triggered!!");

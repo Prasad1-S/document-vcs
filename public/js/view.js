@@ -169,7 +169,7 @@ function closeDeleteModal() {
 confirmDelete.addEventListener("click", () => {
   const docId = document.querySelector(".title-input").dataset.id;
 
-  fetch(`/doc/${docId}`, {
+  fetch(`/document/${docId}`, {
     method: "DELETE"
   })
   .then(() => {
