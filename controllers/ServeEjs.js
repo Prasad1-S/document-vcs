@@ -66,7 +66,7 @@ export async function SettingsPage(req,res){
 /////render set-username page
 
 export async function SetUsername(req,res){
-    // problem found
+    // problem found (solved)
 const { rows } = await pool.query(
         "SELECT iscomplete, imgurl FROM users WHERE userid = $1",
         [req.user.userid]
