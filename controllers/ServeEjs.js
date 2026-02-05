@@ -67,8 +67,14 @@ export async function SettingsPage(req,res){
 
 export async function SetUsername(req,res){
     // problem found
-    if (req.user.is_profile_complete) {
+const { rows } = await pool.query(
+        "SELECT iscomplete, imgurl FROM users WHERE userid = $1",
+        [req.user.userid]
+    );
+
+    if (rows[0].iscomplete) {
         return res.redirect("/home");
     }
-    res.render("username.ejs", { imgUrl: req.user.imgurl });
+
+    res.render("username", { imgUrl: rows[0].imgurl });
 }

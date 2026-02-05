@@ -96,7 +96,6 @@ app.get("/set-username",isAuthenticated ,Serve.SetUsername);
  
 
 app.post("/access/:docid", isAuthenticated, async (req, res) => {
-  console.log("backend hit");
 
   const docid = req.params.docid;
   const { personemail } = req.body;
