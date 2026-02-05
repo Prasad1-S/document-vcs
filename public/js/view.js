@@ -82,7 +82,7 @@ $(document).on("click", ".share-btn", async function () {
   }
 
   try {
-    const res = await fetch("/share", {
+    const res = await fetch("/access", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user, access, docId: dataId })
@@ -187,7 +187,7 @@ roleButtons.forEach(btn => {
     const email = document.getElementById("accessEmail").innerText;
     const documentId = document.querySelector(".title-input").dataset.id; // set this when opening access box
     try {
-      const res = await fetch(`document/share/${documentId}`, {
+      const res = await fetch(`/access/edit/${documentId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"

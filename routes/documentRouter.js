@@ -26,9 +26,6 @@ router.post('/rollback/:docid/:version', isAuthenticated, DocController.Document
 router.post("/edit",isAuthenticated , DocController.CreateNewVersion);
 
 // refactored
-router.put("/share/:docid",isAuthenticated, DocController.ShareDocument);
-
-// refactored
 router.delete("/:docid",isAuthenticated, DocController.DeleteDocument);
 
 

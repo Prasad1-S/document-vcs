@@ -94,83 +94,6 @@ app.get("/set-username",isAuthenticated ,Serve.SetUsername);
 
 ////////////////////////POST routes for recieving data/////////////////////////
 
-
-app.post("/share",isAuthenticated , async(req,res)=>{
-    const{user, access, docId} = req.body;
-    // i have to identify first whether the user is email or userid
-    
-
-    try {
-        const result= await pool.query(
-            "SELECT * FROM users WHERE email=$1",
-            [user]
-        )
-        // if sharing user exists
-        if(result.rowCount>0){
-            const SharingUserID = result.rows[0].userid;
-            const sharerUserId = req.user.userid;
-            console.log(req.body);
-
-            const isAccess = await pool.query(
-                "SELECT * FROM access WHERE docid=$1 AND userid=$2 ;",
-                [docId, sharerUserId]
-            )
-
-            console.log(isAccess);
-            if(isAccess.rows[0].role=='OWNER'){
-                const data = await pool.query(
-                  `
-                  INSERT INTO access (docid, userid, role)
-                  VALUES ($1, $2, $3)
-                  ON CONFLICT (docid, userid) DO NOTHING
-                  RETURNING *;
-                  `,
-                  [docId, SharingUserID, access]
-                );
-
-                if (data.rowCount === 0) {
-                    // send notification about this
-                    console.log("User already has access");
-                }else{
-                    console.log("document shared!")
-                    return res.status(303).json({message:"successfully shred document"});
-                }
-            }else{
-                console.log("no permission to share!");
-                return res.status(401).json({message:"sorry you don't have permissions to share!"})
-            }
-        }else{
-
-            try {
-                // integrate automatic email sending here!!!
-                const resend = new Resend(process.env.EMAIL_API_KEY);
-                // const user = verify if it is email;
-                const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user);
-
-                if (!isEmail) {
-                  return res.status(400).json({ message: "Invalid email address" });
-                }
-
-                console.log(user);
-                await resend.emails.send({
-                  from: 'Acme <onboarding@resend.dev>',
-                  to: [user],
-                  subject: 'hello world',
-                  html: '<p>it works!</p>',
-                });
-
-                console.log("implement the email sending logic here!!");
-                return res.status(200).json({message:"successfully shred document"});
-            } catch (err) {
-                console.log(err);
-                return res.status(500).json({message:"Internal server error!"});
-            }
-        }
-    } catch (err) {
-     console.log(err);   
-    }
-});
-
 app.post("/login", passport.authenticate("local",{
     successRedirect:"/home",
     failureRedirect:"/",
@@ -305,6 +228,7 @@ passport.deserializeUser(async (id,cb)=>{
   cb(null, result.rows[0]);
 })
 
+// refactored
 app.use("/document", documentRouter);
 app.use("/access", acessManagement);
 
