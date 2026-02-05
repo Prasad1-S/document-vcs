@@ -11,7 +11,8 @@ import documentRouter from "./routes/documentRouter.js";
 import acessManagement from "./routes/accessManagement.js"
 import { isAuthenticated } from "./middleware/auth.js";
 import { ensureProfileComplete } from "./middleware/profile.js";
-import * as Serve from "./controllers/ServeEjs.js"
+import * as Serve from "./controllers/ServeEjs.js";
+import setUsername from "./routes/setUsername.js";
 
 
 
@@ -85,14 +86,8 @@ app.get("/logout",(req,res)=>{
 // versions feature
 
 
-// username setupt
-app.get("/set-username",isAuthenticated ,Serve.SetUsername);
-
-///////////////////////Authentication Function (MIDDLEWARE) /////////////////////////////
 
 
-
-////////////////////////POST routes for recieving data/////////////////////////
 
 app.post("/login", passport.authenticate("local",{
     successRedirect:"/home",
@@ -134,26 +129,7 @@ app.post("/register",async(req,res)=>{
 });
 
 // setup the profile
-app.post("/set-username", async (req, res) => {
-  const { username } = req.body;
-  const userId = req.user.userid;
-  console.log(req.user);
-  console.log(username, userId);
 
-  try {
-    await pool.query(
-      `UPDATE users 
-       SET username=$1, iscomplete=true 
-       WHERE userid=$2`,
-      [username, userId]
-    );
-
-    res.redirect("/home");
-  } catch (err) {
-    console.log(err);
-    res.render("username.ejs", { error: "Username already taken" });
-  }
-});
 
 
 passport.use("local", new Strategy(async function verify(username, password, cb){
@@ -231,6 +207,8 @@ passport.deserializeUser(async (id,cb)=>{
 // refactored
 app.use("/document", documentRouter);
 app.use("/access", acessManagement);
+app.use("/set-username", setUsername);
+
 
 app.listen(port,()=>{
     console.log(`Server Running at http://localhost:${port}`);
