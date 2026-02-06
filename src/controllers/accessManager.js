@@ -1,4 +1,4 @@
-import { pool } from "../model/db.js";
+import { pool } from "../config/db.js";
 
 //////////////DELETE USER ACCESS
 export async function DeleteUserAccess(req,res) {

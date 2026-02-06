@@ -1,4 +1,4 @@
-import { pool } from "../model/db.js";
+import { pool } from "../config/db.js";
 
 export async function SetUsername(req,res){
     const { username } = req.body;

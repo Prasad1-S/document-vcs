@@ -1,4 +1,4 @@
-import { pool } from "../model/db.js";
+import { pool } from "../config/db.js";
 
 //////////renderNewDocPage
 export function renderNewDocPage(req,res){
