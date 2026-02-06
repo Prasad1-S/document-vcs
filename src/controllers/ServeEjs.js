@@ -24,7 +24,8 @@ export async function LandingPage(req,res){
                 res.render("landing.ejs",{imgUrl: req.user.imgurl, data:data.rows, notification});
     
             } catch (err) {
-                console.log(err);
+                console.log(`Error rendering the landing page: ${err}`);
+                return res.status(500).json({error:"Internal Server Error!"});
             }
     
 }
@@ -53,14 +54,19 @@ export async function ProfilePage(req,res) {
                 res.render("profile.ejs",{data,imgUrl: req.user.imgurl});
     
             } catch (err) {
-                console.log(err);
+                console.log(`Error rendering the profile page: ${err}`);
+                return res.status(500).json({error:"Internal Server Error!"});
             }
     
 }
 
 export async function SettingsPage(req,res){
-            res.render("settings.ejs",{imgUrl: req.user.imgurl});
-
+    try{
+    res.render("settings.ejs",{imgUrl: req.user.imgurl});
+    }catch(err){
+        console.log(`Error rendering the Settings page: ${err}`);
+        return res.status(500).json({error:"Internal Server Error!"});
+    }
 }
 
 /////render set-username page

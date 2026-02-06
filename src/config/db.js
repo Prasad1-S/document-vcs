@@ -20,7 +20,6 @@ pool.on('error', (err) => {
   process.exit(-1);
 });
 
-// Optional: Test the connection on startup
 pool.query('SELECT NOW()', (err, res) => {
   if (err) {
     console.error('Database connection test failed:', err);

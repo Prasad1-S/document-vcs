@@ -15,7 +15,7 @@ passport.use("local", new Strategy(async function verify(username, password, cb)
             const storedPassword = user.password;
             bcrypt.compare(password,storedPassword, (err,valid)=>{
                 if(err){
-                    console.log(err);
+                    console.error('Password comparison error:', err.message);
                     return cb(err);
                 }else{
                     if(valid){
@@ -29,7 +29,8 @@ passport.use("local", new Strategy(async function verify(username, password, cb)
             return cb(null, false);
         }
     } catch (err) {
-        console.log(err);
+        console.error('Login error:', err.message);
+        res.status(500).send('An error occurred');
     }
 }));
 
@@ -47,7 +48,6 @@ passport.use(
                 const result = await pool.query("SELECT * FROM users WHERE email=$1",[
                     profile.email,
                 ]);
-                console.log(profile);
                 if(result.rows.length===0){
                     const newUser = await pool.query(
                         "INSERT INTO users(email, password, imgurl) VALUES($1,$2,$3)",

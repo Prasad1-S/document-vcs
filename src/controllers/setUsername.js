@@ -1,10 +1,8 @@
 import { pool } from "../config/db.js";
 
 export async function SetUsername(req,res){
-    const { username } = req.body;
+  const { username } = req.body;
   const userId = req.user.userid;
-  console.log(req.user);
-  console.log(username, userId);
 
   try {
     await pool.query(
@@ -16,7 +14,7 @@ export async function SetUsername(req,res){
 
     res.redirect("/home");
   } catch (err) {
-    console.log(err);
+    console.log(`Error Setting the username: ${err}`);
     res.render("username.ejs", { error: "Username already taken" });
   }
 }

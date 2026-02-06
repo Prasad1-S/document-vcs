@@ -6,10 +6,7 @@ export async function DeleteUserAccess(req,res) {
   const { personemail } = req.body;
   const ownerId = req.user.userid;
 
-  console.log(docid, personemail, ownerId);
-//   verify the owner is the owner or not
-// verify does the document and personemail exist or not
-    try {
+  try {
 
         const docCheck = await pool.query(
             "SELECT  * FROM documents WHERE docid=$1;",
@@ -33,11 +30,6 @@ export async function DeleteUserAccess(req,res) {
         )
         if(owner.rowCount==0) return res.status(403).json({ message:"Unauthorized Access!"});
 
-        // yes the document exists
-        // yes the person the user wants to delete exists
-        // yes the user who requests this delete request exists and is a true owner of this document
-        // should i do the db query to delete?
-
         const result = await pool.query(
             "DELETE FROM access WHERE docid=$1 AND userid=$2;",
             [docid,personid]
@@ -52,7 +44,7 @@ export async function DeleteUserAccess(req,res) {
         return res.status(200).json({ success: true });
         
     } catch (err) {
-        console.log(err);
+        console.log(`Could not remove user access: ${err}`);
         return res.status(500).json({message:"Internal Server Error!"});
     }
 
@@ -61,7 +53,6 @@ export async function DeleteUserAccess(req,res) {
 ///////////ADD ACCESS
 export async function GrantAccess(req,res){
         const{user, access, docId} = req.body;
-    // i have to identify first whether the user is email or userid
     
 
     try {
@@ -73,14 +64,12 @@ export async function GrantAccess(req,res){
         if(result.rowCount>0){
             const SharingUserID = result.rows[0].userid;
             const sharerUserId = req.user.userid;
-            console.log(req.body);
 
             const isAccess = await pool.query(
                 "SELECT * FROM access WHERE docid=$1 AND userid=$2 ;",
                 [docId, sharerUserId]
             )
 
-            console.log(isAccess);
             if(isAccess.rows[0].role=='OWNER'){
                 const data = await pool.query(
                   `
@@ -93,8 +82,8 @@ export async function GrantAccess(req,res){
                 );
 
                 if (data.rowCount === 0) {
-                    // send notification about this
                     console.log("User already has access");
+                    return res.status(200).json({message:"User already has access!"});
                 }else{
                     console.log("document shared!")
                     return res.status(303).json({message:"successfully shred document"});
@@ -106,16 +95,13 @@ export async function GrantAccess(req,res){
         }else{
 
             try {
-                // integrate automatic email sending here!!!
                 const resend = new Resend(process.env.EMAIL_API_KEY);
-                // const user = verify if it is email;
                 const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user);
 
                 if (!isEmail) {
                   return res.status(400).json({ message: "Invalid email address" });
                 }
 
-                console.log(user);
                 await resend.emails.send({
                   from: 'Acme <onboarding@resend.dev>',
                   to: [user],
@@ -123,15 +109,16 @@ export async function GrantAccess(req,res){
                   html: '<p>it works!</p>',
                 });
 
-                console.log("implement the email sending logic here!!");
+                console.log("The email should go the the desired user (integration required)");
                 return res.status(200).json({message:"successfully shred document"});
             } catch (err) {
-                console.log(err);
-                return res.status(500).json({message:"Internal server error!"});
+                console.log(`Error occured while shring the email to new user (not in the DB): ${err}`);
+                
             }
         }
     } catch (err) {
-     console.log(err);   
+     console.log(`Access Share Error: ${err}`);
+     return res.status(500).json({message:"Internal server error!"});   
     }
 
 }
@@ -140,7 +127,6 @@ export async function GrantAccess(req,res){
 export async function UpdateAccess(req,res) {
     const docid = req.params.docid;
         const userid = req.user.userid;//check if this is the owner of the document if not then reject req
-        console.log(docid);
         try {
             const owner = await pool.query(
                 "SELECT * FROM documents WHERE docid=$1;",
@@ -151,22 +137,19 @@ export async function UpdateAccess(req,res) {
     
             const {role, personemail} = req.body;
             const newRole = role;
-            console.log(personemail, newRole);
             const person = await pool.query(
                 "SELECT * FROM users WHERE email=$1",
                 [personemail]
             )
-            console.log("success1")
             if(person.rowCount==0) return res.status(404).json({message:"The user doesn't exist!"});
-            console.log("success2")
             const personid = person.rows[0].userid;        
             const update = await pool.query(
                 "UPDATE access SET role=$1 WHERE userid=$2 AND docid=$3;",
                 [newRole,personid,docid]
             )
-            console.log("success3")
             return res.status(200).json({message:"Successfully Updated Access!"});
         } catch (err) {
-            console.log(err);
+            console.log(`Error While updating the Access: ${err}`);
+            return res.status(500).json({message:"Internal server error!"});
         }
 }
