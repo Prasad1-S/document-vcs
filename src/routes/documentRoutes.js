@@ -1,6 +1,6 @@
 import express from "express";
 import { isAuthenticated } from "../middleware/auth.js";
-import * as DocController from "../controllers/document.js"
+import * as DocController from "../controllers/documentController.js"
 const router = express.Router();
 
 

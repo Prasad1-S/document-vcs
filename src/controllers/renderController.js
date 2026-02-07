@@ -21,7 +21,7 @@ export async function LandingPage(req,res){
                   };
                 }
     
-                res.render("landing.ejs",{imgUrl: req.user.imgurl, data:data.rows, notification:"Successfully Logged In", notificationType:"success"});
+                res.render("landing.ejs",{imgUrl: req.user.imgurl, data:data.rows});
     
             } catch (err) {
                 console.log(`Error rendering the landing page: ${err}`);

@@ -57,6 +57,73 @@ Built with a focus on robust backend architecture, featuring custom authenticati
 - **Additional Libraries:** dotenv, uuid, Resend (email service)
 
 ## Architecture
+```md
+docu-vault/
+├── src/
+│   ├── config/
+│   │   ├── db.js                
+│   │   └─ passport.js          
+│   │ 
+│   ├── controllers/
+│   │   ├── accessController.js    
+│   │   ├── documentController.js
+│   │   ├── authController.js 
+│   │   ├── renderController.js   
+│   │   └── profileController.js 
+│   │
+│   ├── middleware/
+│   │   ├── auth.js              
+│   │   └── profile.js      
+│   ├── routes/
+│   │   ├── accessRoutes.js             
+│   │   ├── authRoutes.js             
+│   │   ├── documentRoutes.js         
+│   │   ├── profileRoutes.js          
+│   │   └── viewRoutes.js           
+│   │
+│   └── app.js
+│
+├── public/
+│   ├── css/
+│   │   ├── edit.css
+│   │   ├── landingPage.css
+│   │   ├── view.css
+│   │   ├── versions.css
+│   │   ├── user_identity.css
+│   │   ├── settings.css
+│   │   ├── new_document.css
+│   │   └── profile.css
+│   ├── js/
+│   │   ├── landingPage.js
+│   │   ├── new_document.js
+│   │   ├── user_identity.js
+│   │   ├── version.js
+│   │   ├── view.js
+│   │   └── script.js
+│   └── assets/
+│       └── placeholder-avatar.png
+│
+├── database/
+│   ├── migrations/
+│   │   ├── 001_create_users_table.sql
+│   │   ├── 002_create_documents_table.sql
+│   │   ├── 003_create_versions_table.sql
+│   │   └── 004_create_permissions_table.sql
+│   ├── seeds/
+│   │   └── dev_data.sql
+│   └── schema.sql              
+│
+├── tests/          
+│
+├── .env.example                 
+├── .env
+├── .gitignore
+├── package.json
+├── package-lock.json
+├── app.js                       
+├── server.js                    
+└── README.md
+```
 
 ## Project Structure
 

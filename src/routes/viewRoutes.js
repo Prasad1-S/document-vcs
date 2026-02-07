@@ -1,7 +1,7 @@
 import express from "express";
 import { isAuthenticated } from "../middleware/auth.js";
 import { ensureProfileComplete } from "../middleware/profile.js";
-import * as Serve from "../controllers/ServeEjs.js";
+import * as Serve from "../controllers/renderController.js";
 
 const router = express.Router();
 

@@ -1,7 +1,7 @@
 import express from "express";
-import { SetUsername } from "../controllers/setUsername.js";
+import { SetUsername } from "../controllers/profileController.js";
 import { isAuthenticated } from "../middleware/auth.js";
-import { ServeSetUsername } from "../controllers/ServeEjs.js";
+import { ServeSetUsername } from "../controllers/renderController.js";
 const router = express.Router();
 
 router.post("/",isAuthenticated , SetUsername);

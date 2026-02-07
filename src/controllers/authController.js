@@ -1,7 +1,8 @@
 import { pool } from "../config/db.js";
 import bcrypt from "bcrypt";
 const saltRounds=10;
-// 
+
+// Register user 
 export async function RegisterUser(req,res){
         const { username, password } = req.body;
         try {
