@@ -115,6 +115,22 @@
         </div>
     </div>
 
+    <% if (locals.notification) { %>
+        <div class="toast <%= locals.notificationType || 'success' %>" id="loginToast">
+            <% if (locals.notificationType==='error' ) { %>
+                <i class="fi fi-br-cross-circle"></i>
+                <% } else if (locals.notificationType==='info' ) { %>
+                    <i class="fi fi-br-info"></i>
+                    <% } else { %>
+                        <i class="fi fi-br-check-circle"></i>
+                        <% } %>
+                            <span>
+                                <%= notification %>
+                            </span>
+                            <div class="toast-progress"></div>
+        </div>
+        <% } %>
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="../js/landingPage.js"></script>
 </body>

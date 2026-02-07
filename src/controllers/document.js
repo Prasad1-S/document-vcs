@@ -455,7 +455,7 @@ export async function DeleteDocument(req, res) {
         "DELETE FROM documents WHERE docid=$1;",
         [docid]
       )
-      return res.status(200).json({ message: "Operaation Successful!!" });
+      return res.status(200).json({ message: "Operation Successful!!" });
     } else {
       return res.status(401).json({ message: "You dont have access to perform this operation!" });
     }

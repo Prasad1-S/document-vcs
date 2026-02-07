@@ -149,3 +149,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+
+// toast
+$(document).ready(function() {
+    const toast = $('#loginToast');
+    
+    if (toast.length) {
+        // Show toast
+        setTimeout(() => {
+            toast.addClass('show');
+        }, 100);
+        
+        // Hide toast after 3 seconds
+        setTimeout(() => {
+            toast.removeClass('show');
+        }, 3100);
+    }
+});
