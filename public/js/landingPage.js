@@ -151,19 +151,21 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// toast
+
+// Simple toast from query parameter
 $(document).ready(function() {
-    const toast = $('#loginToast');
+    const urlParams = new URLSearchParams(window.location.search);
+    const message = urlParams.get('notification');
     
-    if (toast.length) {
-        // Show toast
-        setTimeout(() => {
-            toast.addClass('show');
-        }, 100);
+    if (message) {
+        const toast = $('#loginToast');
+        $('#toastMessage').text(decodeURIComponent(message));
+        toast.show();
         
-        // Hide toast after 3 seconds
-        setTimeout(() => {
-            toast.removeClass('show');
-        }, 3100);
+        setTimeout(() => toast.addClass('show'), 100);
+        setTimeout(() => toast.removeClass('show'), 3100);
+        
+        // Clean URL (remove query param)
+        window.history.replaceState({}, '', window.location.pathname);
     }
 });

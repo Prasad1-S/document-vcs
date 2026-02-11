@@ -1,6 +1,6 @@
 import { pool } from "../config/db.js";
 
-/////// render landding page
+/////// render landing page
 export async function LandingPage(req,res){
             const Userid = req.user.userid;
             try {

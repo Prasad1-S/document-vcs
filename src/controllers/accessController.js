@@ -86,7 +86,10 @@ export async function GrantAccess(req,res){
                     return res.status(200).json({message:"User already has access!"});
                 }else{
                     console.log("document shared!")
-                    return res.status(303).json({message:"successfully shred document"});
+                return res.json({
+                  success: true,
+                  redirectUrl: `/document/view/${docId}?notification=Document Shared Successfully!`
+                });
                 }
             }else{
                 console.log("no permission to share!");
@@ -110,9 +113,17 @@ export async function GrantAccess(req,res){
                 });
 
                 console.log("The email should go the the desired user (integration required)");
-                return res.status(200).json({message:"successfully shred document"});
+                 return res.json({
+                  success: true,
+                  redirectUrl: `/document/view/${docId}?notification=Document Shared Successfully!`
+                });
+
             } catch (err) {
                 console.log(`Error occured while shring the email to new user (not in the DB): ${err}`);
+                return res.json({
+                  success: true,
+                  redirectUrl: `/document/view/${docId}?notification=Document Shared Successfully!`
+                });
                 
             }
         }

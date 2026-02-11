@@ -26,7 +26,7 @@ export async function RegisterUser(req,res){
     
                         const user = result.rows[0];
                         req.login(user,(err)=>{
-                            res.status(303).redirect("/home");
+                            res.status(303).redirect("/home?notification=Successfully created account.");
                         });
                     }
                 })

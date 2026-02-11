@@ -221,7 +221,7 @@ export async function NewDocumentPost(req, res) {
     )
     await client.query("COMMIT");
     // update regarding successfull
-    return res.status(303).redirect("/home");
+    return res.status(303).redirect("/home?notification=Successfully created document");
   } catch (err) {
     await client.query("ROLLBACK;");
     console.log(`Error creating a new document: ${err}`);
@@ -338,7 +338,7 @@ export async function DocumentVersionRollback(req, res) {
     console.log(docid, version, 'successful rollback');
     res.json({
       success: true,
-      redirectUrl: '/home'
+      redirectUrl: '/home?notification=Successfully rolled back the document'
     });
 
   } catch (error) {
