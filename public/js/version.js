@@ -160,7 +160,7 @@ $(function () {
         success: (response) => {
           console.log('Rollback successful:', response);
           // Redirect to document or refresh page
-          window.location.href = `/home`;
+          window.location.href = `/document/view/${this.selectedVersion.docid}?notification=Successfully rolled back to version number ${this.selectedVersion.version}`;
         },
         error: (xhr, status, error) => {
           console.error('Rollback failed:', error);

@@ -405,7 +405,7 @@ export async function CreateNewVersion(req, res) {
         await client.query("COMMIT");
 
         //   handling edit success
-        res.redirect("/home?success=edit_saved");
+        res.redirect("/home?notification=Successfully created new version!");
 
       } catch (err) {
         await client.query("ROLLBACK");

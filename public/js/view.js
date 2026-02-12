@@ -167,7 +167,7 @@ confirmDelete.addEventListener("click", () => {
     method: "DELETE"
   })
   .then(() => {
-    window.location.href = "/home?notification=Successfully Deleted";
+    window.location.href = "/home?notification=Document Deleted Successfully!";
   });
 });
 
@@ -191,8 +191,11 @@ roleButtons.forEach(btn => {
           role: role
         })
       });
-      if (!res.ok) throw new Error("Failed to update role");
-      alert(`Access updated to ${role}`);
+      const data = await res.json();
+
+      if (data.success) {
+        window.location.href = data.redirectUrl;
+      }
     } catch (err) {
       console.error(err);
       alert("Something went wrong");
@@ -220,12 +223,12 @@ removeAccessBtn.addEventListener("click", async () => {
         personemail: email
       })
     });
-    console.log("success");
+    
+    const data = await res.json();
 
-    if (!res.ok) throw new Error("Failed to remove access");
-    console.log("success");
-
-    alert("Access removed successfully");
+    if (data.success) {
+      window.location.href = data.redirectUrl;
+    }
   } catch (err) {
     console.error(err);
     alert("Something went wrong");

@@ -41,11 +41,17 @@ export async function DeleteUserAccess(req,res) {
             });
         }
 
-        return res.status(200).json({ success: true });
+        return res.json({
+            success: true,
+            redirectUrl: `/document/view/${docid}?notification=Successfully deleted user access!`
+            });
         
     } catch (err) {
         console.log(`Could not remove user access: ${err}`);
-        return res.status(500).json({message:"Internal Server Error!"});
+        return res.json({
+            success: false,
+            redirectUrl: `/document/view/${docid}?notification=Failed to delete user access!!`
+            });
     }
 
 }
@@ -121,7 +127,7 @@ export async function GrantAccess(req,res){
             } catch (err) {
                 console.log(`Error occured while shring the email to new user (not in the DB): ${err}`);
                 return res.json({
-                  success: true,
+                  success: false,
                   redirectUrl: `/document/view/${docId}?notification=Document Shared Successfully!`
                 });
                 
@@ -158,9 +164,18 @@ export async function UpdateAccess(req,res) {
                 "UPDATE access SET role=$1 WHERE userid=$2 AND docid=$3;",
                 [newRole,personid,docid]
             )
-            return res.status(200).json({message:"Successfully Updated Access!"});
+            if (update.rowCount === 0) {
+                return res.status(404).json({message: "Access record not found for this user"});
+            }
+            return res.json({
+                  success: true,
+                  redirectUrl: `/document/view/${docid}?notification=Successfully updated access!!`
+                });
         } catch (err) {
             console.log(`Error While updating the Access: ${err}`);
-            return res.status(500).json({message:"Internal server error!"});
+            return res.json({
+              success: false,
+              redirectUrl: `/document/view/${docid}?notification=Failed to update access!!`
+            });
         }
 }
