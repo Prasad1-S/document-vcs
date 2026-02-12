@@ -276,7 +276,7 @@ button:active {
     font-size: 14px;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustmentss */
 @media (max-width: 480px) {
     .form {
         max-width: 100%;
