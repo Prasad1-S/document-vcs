@@ -1,62 +1,378 @@
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: #f5f5f5;
-        min-height: 100vh;
-    }
-    /* Navbar */
-    .navbar {
-        background: white;
-        padding: 16px 32px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        position: sticky;
-        top: 0;
-        z-index: 100;
-    }
-    .profileDetails{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 8px;
-    }
-    .userName{
-        margin-right: 8px;
-        font-size: 20px;
-    }
-    .logo_name {
-        font-size: 24px;
-        font-weight: 700;
-        color: #667eea;
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-    .logo_name:hover {
-        color: #764ba2;
-    }
-    .logo_img {
-        cursor: pointer;
-        transition: transform 0.3s ease;
+/* CSS Variables - matching theme */
+:root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #21262d;
+    --border-primary: #30363d;
+    --border-secondary: #21262d;
+    --text-primary: #c9d1d9;
+    --text-secondary: #8b949e;
+    --text-tertiary: #6e7681;
+    --accent-primary: #238636;
+    --accent-hover: #2ea043;
+    --accent-active: #26a641;
+    --input-bg: #0d1117;
+    --input-border: #30363d;
+    --input-focus: #1f6feb;
+    --navbar-bg: #161b22;
+    --editor-bg: #0d1117;
+    --success: #238636;
+    --error: #f85149;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+    --shadow-md: 0 3px 6px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+/* Navbar */
+.navbar {
+    background: var(--navbar-bg);
+    padding: 12px 24px;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-primary);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo_name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.logo_name:hover {
+    color: var(--accent-primary);
+}
+
+.profileDetails {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
+.newDoc,
+.home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: color 0.15s ease, background 0.15s ease;
+    border-radius: 6px;
+}
+
+.newDoc i,
+.home i {
+    font-size: 18px;
+}
+
+.newDoc:hover,
+.home:hover {
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+}
+
+.profile {
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid var(--border-primary);
+    transition: border-color 0.15s ease;
+}
+
+.profile:hover {
+    border-color: var(--text-tertiary);
+}
+
+.userName {
+    margin-right: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+/* Dropdown Menu */
+.logout {
+    position: absolute;
+    top: 55px;
+    right: 1%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 6px;
+    padding: 4px 0;
+    min-width: 180px;
+    box-shadow: var(--shadow-lg);
+    display: none;
+    z-index: 1000;
+}
+
+.logout button {
+    width: 100%;
+    padding: 8px 12px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.15s ease;
+}
+
+.logout button:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.logout button i {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.log {
+    border-top: 1px solid var(--border-primary);
+    margin-top: 4px;
+    padding-top: 12px;
+}
+
+/* Document Editor Container */
+.DocBox {
+    max-width: 900px;
+    margin: 24px auto;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+/* Form */
+form {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 108px);
+}
+
+/* Title Input */
+.title-input {
+    font-size: 28px;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    padding: 20px 24px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+    transition: background 0.15s ease;
+}
+
+.title-input:focus {
+    background: var(--editor-bg);
+}
+
+.title-input::placeholder {
+    color: var(--text-tertiary);
+}
+
+.title-input[readonly] {
+    cursor: default;
+    background: var(--bg-secondary);
+}
+
+/* Content Textarea */
+.content-input {
+    flex: 1;
+    font-size: 15px;
+    line-height: 1.7;
+    border: none;
+    outline: none;
+    resize: none;
+    padding: 24px;
+    background: var(--editor-bg);
+    color: var(--text-primary);
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+    min-height: 420px;
+}
+
+.content-input::placeholder {
+    color: var(--text-tertiary);
+}
+
+/* Submit Box */
+.submitbox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-primary);
+}
+
+.submitbox input[type="text"] {
+    flex: 1;
+    height: 36px;
+    padding: 0 12px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.submitbox input[type="text"]::placeholder {
+    color: var(--text-tertiary);
+}
+
+.submitbox input[type="text"]:focus {
+    outline: none;
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.1);
+}
+
+.submitbox input[type="text"]:hover:not(:focus) {
+    border-color: var(--text-tertiary);
+}
+
+/* Submit Button */
+.submitbtn {
+    height: 36px;
+    padding: 0 20px;
+    background: var(--accent-primary);
+    color: #ffffff;
+    border: 1px solid rgba(240, 246, 252, 0.1);
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+}
+
+.submitbtn:hover {
+    background: var(--accent-hover);
+    border-color: rgba(240, 246, 252, 0.15);
+}
+
+.submitbtn:active {
+    background: var(--accent-active);
+}
+
+/* Notification Toast */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 14px 20px;
+    border-radius: 6px;
+    color: #ffffff;
+    background: var(--success);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+    font-weight: 500;
+    font-size: 14px;
+    box-shadow: var(--shadow-lg);
+    opacity: 1;
+    transition: opacity 0.4s ease;
+}
+
+.notification.error {
+    background: var(--error);
+}
+
+.notification.success {
+    background: var(--success);
+}
+
+/* No Data Message */
+h1 {
+    text-align: center;
+    margin-top: 100px;
+    color: var(--text-secondary);
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+    .DocBox {
+        margin: 16px;
+        border-radius: 6px;
     }
     
-    .logo_img:hover {
-        transform: scale(1.1);
+    form {
+        height: calc(100vh - 92px);
     }
+    
+    .title-input {
+        font-size: 24px;
+        padding: 16px 20px;
+    }
+    
+    .content-input {
+        padding: 20px;
+        font-size: 14px;
+    }
+}
 
-.notification {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 12px 18px;
-  border-radius: 6px;
-  color: white;
-  background: #28a745;
-  z-index: 1000;
-  font-weight: 500;
+@media (max-width: 640px) {
+    .navbar {
+        padding: 12px 16px;
+    }
+    
+    .DocBox {
+        margin: 12px;
+    }
+    
+    .title-input {
+        font-size: 20px;
+        padding: 14px 16px;
+    }
+    
+    .content-input {
+        padding: 16px;
+    }
+    
+    .submitbox {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 12px;
+    }
+    
+    .submitbtn {
+        width: 100%;
+        height: 40px;
+    }
+    
+    .notification {
+        right: 16px;
+        left: 16px;
+        text-align: center;
+    }
 }
