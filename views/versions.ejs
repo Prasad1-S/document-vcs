@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Version History - <%= title %></title>
+  <link rel="icon" type="image/png" href="/assets/logoo.png">
   <link rel="stylesheet" href="/css/versions.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons@3.3.1/css/all/all.min.css">
 </head>
@@ -11,14 +12,14 @@
 
 <!-- Navbar -->
 <div class="navbar">
-  <a href="/home" class="logo_name">Name</a>
+  <a href="/home" class="logo_name">DocuVault</a>
   <div class="profileDetails">
     <div class="newDoc"><i class="fi fi-br-plus"></i></div>
     <div class="home"><i class="fi fi-br-house-chimney"></i></div>
     <% if(imgUrl){ %>
       <img src="<%= imgUrl %>" class="profile" height="40" alt="Profile">
     <% } else { %>
-      <img src="../assets/github.png" class="profile" height="40" alt="Profile">
+      <img src="/assets/github.png" class="profile" height="40" alt="Profile">
     <% } %>
   </div>
 </div>

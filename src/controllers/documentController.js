@@ -58,7 +58,8 @@ export async function showDocumentContent(req, res) {
               owner: ownerData.rows[0].username,
               created_by: ownerData.rows[0].imgurl,
               people: people.rows,
-              isowner: owner
+              isowner: owner,
+              role: access
             }, imgUrl: req.user.imgurl
           });
 

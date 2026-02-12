@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document View</title>
+    <link rel="icon" type="image/png" href="/assets/logoo.png">
     <link rel="stylesheet" href="/css/view.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons@3.3.1/css/all/all.min.css">
 </head>
@@ -11,7 +12,7 @@
 
     <!-- navbar -->
     <div class="navbar">
-        <a href="/home" class="logo_name">Name</a>
+        <a href="/home" class="logo_name">DocuVault</a>
         <!-- link to profile -->
         <div class="profileDetails">
             <div class="newDoc"><i class="fi fi-br-plus"></i></div>
@@ -19,7 +20,7 @@
             <% if(imgUrl){ %>
             <img src="<%= imgUrl %>" alt="Logo" class="profile" height="40px" referrerpolicy="no-referrer">
             <% }else{ %>
-            <img src="../assets/github.png" alt="Logo" class="profile" height="40px" referrerpolicy="no-referrer">
+            <img src="/assets/github.png" alt="Logo" class="profile" height="40px" referrerpolicy="no-referrer">
             <% } %>
         </div>    
     </div>
@@ -35,14 +36,21 @@
       <div class="docBox">
         <% if(locals.data){ %>
         <div class="title-input" data-id="<%= data.docId%>" data-version="<%= data.latestversion %>"><%= data.title %></div>
-        <div class="CreatedBy"><img src="<%= data.created_by %>" alt="ownerimg"> <%= data.owner %> | <p>27 July 2025</p></div>
+        <div class="CreatedBy">
+          <% if(locals.data.created_by){ %>
+          <img src="<%= data.created_by %>" alt="ownerimg"> <%= data.owner %> | <p>27 July 2025</p></div>
+          <% }else{ %>
+            <img src="/assets/github.png" alt="ownerimg"> <%= data.owner %> | <p>27 July 2025</p></div>
+            <% } %>
         <div class="content content-input"><%= data.content %></div>
       </div>
 
       <div class="essentials">
+        <% if(data.access!='VIEWER'){ %>
         <div class="versionContainer">
             <div class="btn">Version History</div>
         </div>
+        <% } %>
         <% if(data.isowner){ %>
         <div class="deletecont">
           <div class="deletebtn">Delete Document</div>
@@ -76,8 +84,12 @@
         <% } %>
 
         <div class="NewVersion">
+          <% if(data.access!='VIEWER'){ %>
           <div class="editbtn">Edit</div>
+          <% } %>
+          <% if(data.isowner){ %>
           <div class="sharebtn">Share</div>
+          <% } %>
         </div>
       </div>
     </div>

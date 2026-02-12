@@ -3,21 +3,27 @@ $(function () {
   /* ---------- NAVIGATION ---------- */
 
   $(document).on('click', '.prof', () => location.href = "/profile");
-  $(document).on('click', '.newDoc', () => location.href = "/new");
+  $(document).on('click', '.newDoc', () => location.href = "/document/new");
   $(document).on('click', '.home', () => location.href = "/home");
   $(document).on('click', '.setti', () => location.href = "/settings");
   $(document).on('click', '.log', () => location.href = "/logout");
 
   /* ---------- PROFILE DROPDOWN ---------- */
 
+   // Toggle dropdown when clicking profile image
   $(document).on('click', '.profile', function (e) {
     e.stopPropagation();
     $(".logout").toggle();
   });
 
-  $(document).on('click', '.profile', function (e) {
+  // Prevent dropdown from closing when clicking inside it
+  $(document).on('click', '.logout', function (e) {
     e.stopPropagation();
-    $(".logout").toggle();
+  });
+
+  // Close dropdown when clicking anywhere else on the page
+  $(document).on('click', function () {
+    $(".logout").hide();
   });
 
   $(document).on('click', '.logout', function (e) {

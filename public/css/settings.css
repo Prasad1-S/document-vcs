@@ -1,206 +1,342 @@
+/* CSS Variables - matching theme */
+:root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #21262d;
+    --border-primary: #30363d;
+    --border-secondary: #21262d;
+    --text-primary: #c9d1d9;
+    --text-secondary: #8b949e;
+    --text-tertiary: #6e7681;
+    --accent-primary: #238636;
+    --accent-hover: #2ea043;
+    --accent-active: #26a641;
+    --input-bg: #0d1117;
+    --input-border: #30363d;
+    --input-focus: #1f6feb;
+    --navbar-bg: #161b22;
+    --card-bg: #161b22;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+    --shadow-md: 0 3px 6px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Reset */
 * {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-background: #f5f5f5;
-min-height: 100vh;
-}
-.home {
-    margin-right: 8px;
-    margin-top: 3px;
-    font-size: 30px;
-}
-.newDoc {
-    margin-right: 8px;
-    margin-top: 3px;
-    font-size: 30px;
-}
-.logo_name {
-    font-size: 24px;
-    font-weight: 700;
-    color: #667eea;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-.logo_name:hover {
-    color: #764ba2;
-}
-.logo_img {
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-.logo_img:hover {
-    transform: scale(1.1);
-}
-.logout {
-    display: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.5;
 }
 
-.CreateNew{
-    width: 250px;
-    height: 100%;
-    border: 1px solid red;
-}
-
-.profileContainer {
-  width: 320px;
-  margin: 40px auto;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transition: background-color 0.3s ease;
-}
-
-.profileContainer:hover {
-  background-color: #f7f9fc;
-}
-
-/* Each row */
-.profileContainer .row {
-  width: 100%;
-  text-align: center;
-  padding: 10px 12px;
-  border-radius: 10px;
-  font-size: 14px;
-  color: #333;
-  transition: background-color 0.25s ease;
-}
-
-/* Row hover */
-.profileContainer .row:hover {
-  background-color: #eef2f7;
-}
-
-/* Profile image */
-.profileContainer .profile {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #e1e6ef;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.profimg{
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #e1e6ef;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-/* Image hover */
-.profileContainer .profile:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-}
-
-
+/* Navbar */
 .navbar {
-background: white;
-padding: 16px 32px;
-height: 60px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-position: sticky;
-top: 0;
-z-index: 100;
+    background: var(--navbar-bg);
+    padding: 12px 24px;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-primary);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo_name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.logo_name:hover {
+    color: var(--accent-primary);
 }
 
 .profileDetails {
- display: flex;
- flex-direction: row;
- align-items: center;
- gap: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
 }
 
-.logout {
-    height: fit-content;
-    width: 200px;
-    border: 1px solid red;
+.newDoc,
+.home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: color 0.15s ease, background 0.15s ease;
+    border-radius: 6px;
 }
-.profile-wrapper {
-    position: relative;
-    display: inline-block;
+
+.newDoc i,
+.home i {
+    font-size: 18px;
 }
+
+.newDoc:hover,
+.home:hover {
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+}
+
 .profile {
     cursor: pointer;
     border-radius: 50%;
+    border: 2px solid var(--border-primary);
+    transition: border-color 0.15s ease;
 }
-/* dropdown */
+
+.profile:hover {
+    border-color: var(--text-tertiary);
+}
+
+/* Dropdown Menu */
 .logout {
     position: absolute;
     top: 55px;
     right: 1%;
-    background: #fff;
-    border-radius: 8px;
-    padding: 8px 0;
-    min-width: 140px;    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);    display: none;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 6px;
+    padding: 4px 0;
+    min-width: 180px;
+    box-shadow: var(--shadow-lg);
+    display: none;
     z-index: 1000;
 }
-/* show on hover */
-.profile-wrapper:hover .logout {
-    display: block;
-}
-/* logout button */
+
 .logout button {
     width: 100%;
-    padding: 10px 16px;
+    padding: 8px 12px;
     background: none;
     border: none;
     text-align: left;
     cursor: pointer;
     font-size: 14px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.15s ease;
 }
+
 .logout button:hover {
-    background-color: #f5f5f5;
+    background-color: var(--bg-tertiary);
 }
+
+.logout button i {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
 .log {
-    border-top: 1px solid black;
+    border-top: 1px solid var(--border-primary);
+    margin-top: 4px;
+    padding-top: 12px;
 }
 
+/* Main Container */
+.main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px;
+}
 
-/* ///////////this page edit above was navbar//////////// */
-
-.submitBtn{
-    border: 1px solid red;
+/* Submit Button Container */
+.submitBtn {
     display: flex;
-    justify-content:flex-end;
+    justify-content: flex-end;
     align-items: center;
-    height: 60px;
+    padding: 16px 0;
+    margin-bottom: 24px;
 }
 
-.submit{
-    margin-right: 12%;
-    height: 70%;
-    width: 8%;
+.submit {
+    padding: 10px 24px;
+    background: var(--accent-primary);
+    color: #ffffff;
+    border: 1px solid var(--accent-primary);
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
 }
 
-.editContainer{
+.submit:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+
+.submit:active {
+    background: var(--accent-active);
+}
+
+/* Edit Container */
+.editContainer {
+    background: var(--card-bg);
+    border: 1px solid var(--border-primary);
+    border-radius: 8px;
+    padding: 32px;
     display: flex;
-    min-width: 30%; 
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    border: 1px solid red;
-}
-.row{
-    border: 1px solid red;
+    gap: 20px;
+    box-shadow: var(--shadow-md);
 }
 
-.row1{
+/* Profile Image Row */
+.row1 {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    margin-bottom: 12px;
+}
 
+.profimg {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--border-primary);
+    transition: border-color 0.15s ease;
+}
+
+.profimg:hover {
+    border-color: var(--accent-primary);
+}
+
+/* Upload Icon Button */
+.upload-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.upload-icon:hover {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+}
+
+.upload-icon i {
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.upload-icon:hover i {
+    color: #ffffff;
+}
+
+/* Info Rows */
+.row {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-primary);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--text-primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.row:not(.row1):hover {
+    background: var(--bg-primary);
+    border-color: var(--text-tertiary);
+}
+
+.row span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.row span:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.row span i {
+    font-size: 14px;
+}
+
+/* Empty Row (for spacing or future use) */
+.row:empty {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main {
+        padding: 16px;
+    }
+    
+    .editContainer {
+        padding: 24px 20px;
+    }
+    
+    .submitBtn {
+        padding: 12px 0;
+    }
+    
+    .submit {
+        width: 100%;
+    }
+    
+    .profimg {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media (max-width: 640px) {
+    .navbar {
+        padding: 12px 16px;
+    }
+    
+    .row {
+        font-size: 13px;
+        padding: 12px 14px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .row span {
+        align-self: flex-end;
+    }
 }
