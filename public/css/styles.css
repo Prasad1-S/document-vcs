@@ -1,4 +1,3 @@
-/* CSS Variables for consistent theming */
 :root {
     --bg-primary: #0d1117;
     --bg-secondary: #161b22;
@@ -20,7 +19,6 @@
     --shadow-md: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* Reset and base styles */
 html,
 body {
     margin: 0;
@@ -31,7 +29,6 @@ body {
     line-height: 1.5;
 }
 
-/* Noise grain effect */
 @keyframes grain {
     0%, 100% { transform: translate(0); }
     20% { transform: translate(-5%, 5%); }
@@ -51,7 +48,6 @@ body::before {
     z-index: 9999;
 }
 
-/* Navbar */
 .navbar {
     display: flex;
     align-items: center;
@@ -75,7 +71,6 @@ body::before {
     object-fit: contain;
 }
 
-/* Toggle box container */
 .toggle_box {
     display: flex;
     align-items: center;
@@ -89,7 +84,6 @@ body::before {
     border: 1px solid var(--border-primary);
 }
 
-/* Toggle buttons */
 .toggle {
     cursor: pointer;
     display: inline-block;
@@ -120,7 +114,6 @@ body::before {
     border-color: var(--accent-hover);
 }
 
-/* Form container */
 .form {
     width: 100%;
     max-width: 340px;
@@ -153,7 +146,6 @@ body::before {
     text-align: center;
 }
 
-/* Input fields */
 input {
     height: 40px;
     width: 100%;
@@ -183,7 +175,6 @@ input:hover:not(:focus) {
     border-color: var(--text-tertiary);
 }
 
-/* Buttons */
 button {
     height: 40px;
     width: 100%;
@@ -208,7 +199,6 @@ button:active {
     background: var(--accent-active);
 }
 
-/* Social login card */
 .card {
     margin-top: 16px;
     width: 100%;
@@ -246,7 +236,6 @@ button:active {
     font-size: 16px;
 }
 
-/* Form visibility toggles */
 .loginAccount {
     display: none;
 }
@@ -259,7 +248,6 @@ button:active {
     display: none;
 }
 
-/* User message */
 .usermsg {
     max-width: 340px;
     margin: 16px auto;
@@ -276,7 +264,6 @@ button:active {
     font-size: 14px;
 }
 
-/* Responsive adjustmentss */
 @media (max-width: 480px) {
     .form {
         max-width: 100%;
@@ -291,12 +278,11 @@ button:active {
         font-size: 14px;
     }
 }
-/* Developer Says Section */
 .developer-says {
     position: fixed;
     bottom: 0;
     left: 24px;
-    max-width: 650px;
+    max-width: none;        
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -313,7 +299,7 @@ button:active {
 
 .developer-says p {
     position: absolute;
-    bottom: 120px;          /* Changed from top to bottom - positions it above the developer */
+    bottom: 120px;
     left: 180px;
     margin: 0;
     padding: 14px 16px;
@@ -324,15 +310,15 @@ button:active {
     font-size: 13px;
     line-height: 1.6;
     box-shadow: var(--shadow-md);
-    max-width: 400px;
+    width: 300px;           
+    max-width: none;        
 }
 
-/* Speech bubble arrow pointing LEFT and DOWN to the developer */
 .developer-says p::before {
     content: "";
     position: absolute;
     left: -8px;
-    bottom: 20px;           /* Changed from top to bottom */
+    bottom: 20px;           
     width: 0;
     height: 0;
     border-top: 8px solid transparent;
@@ -344,7 +330,7 @@ button:active {
     content: "";
     position: absolute;
     left: -6px;
-    bottom: 20px;           /* Changed from top to bottom */
+    bottom: 20px;           
     width: 0;
     height: 0;
     border-top: 8px solid transparent;
@@ -352,27 +338,34 @@ button:active {
     border-right: 8px solid var(--bg-secondary);
 }
 
-/* Responsive - hide on mobile */
 @media (max-width: 968px) {
     .developer-says {
-        display: none;
-    }
-}
-
-/* Tablet - smaller version */
-@media (min-width: 769px) and (max-width: 968px) {
-    .developer-says {
-        display: flex;
+        position: static;
+        margin: 24px auto;
+        max-width: 90%;
+        flex-direction: row;
+        gap: 12px;
     }
     
     .developer-says img {
-        width: 150px;
+        width: 80px;  
     }
     
     .developer-says p {
-        left: 130px;
-        bottom: 100px;
-        max-width: 220px;
+        position: static;
+        width: auto;
+        max-width: 100%;
         font-size: 12px;
+        padding: 10px 12px;
     }
+    
+    
+    .developer-says p::before,
+    .developer-says p::after {
+        display: none;
+    }
+}
+a {
+  color: #238636;        
+  text-decoration: none; 
 }
