@@ -8,3 +8,4 @@ CREATE TABLE users (
     createdat TIMESTAMPTZ DEFAULT now(),
     updatedat TIMESTAMPTZ DEFAULT now()
 );
+
