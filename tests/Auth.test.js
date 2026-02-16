@@ -1,6 +1,5 @@
 import request from 'supertest';
-import app from '../src/app.js'; // Your app should already have routes mounted
-
+import app from '../src/app.js'; 
 describe('Authentication Routes', () => {
   
   describe('POST /register', () => {
