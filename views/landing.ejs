@@ -59,39 +59,9 @@
 
             <div class="owned">
                 <div class="DocCard share">
-                    <h3 class="title">The Summer</h3>
-                    <p class="Owner">Owned by: ananya-G</p>
-                    <p class="lastEdited">Last Edited: 2 hours ago</p>
-                </div>
-
-                <div class="DocCard share">
-                    <h3 class="title">The Winter</h3>
-                    <p class="Owner">Owned by: ananya-G</p>
-                    <p class="lastEdited">Last Edited: 2 hours ago</p>
-                </div>
-
-                <div class="DocCard share">
-                    <h3 class="title">The Winter</h3>
-                    <p class="Owner">Owned by: ananya-G</p>
-                    <p class="lastEdited">Last Edited: 2 hours ago</p>
-                </div>
-
-                <div class="DocCard owner">
-                    <h3 class="title">The Sunrise</h3>
-                    <p class="Owner">Owned by: prasad1-S</p>
-                    <p class="lastEdited">Last Edited: 2 hours ago</p>
-                </div>
-
-                <div class="DocCard owner">
-                    <h3 class="title">The Sunset</h3>
-                    <p class="Owner">Owned by: prasad1-S</p>
-                    <p class="lastEdited">Last Edited: 2 hours ago</p>
-                </div>
-
-                <div class="DocCard owner">
-                    <h3 class="title">The Monsoon</h3>
-                    <p class="Owner">Owned by: prasad1-S</p>
-                    <p class="lastEdited">Last Edited: 2 hours ago</p>
+                    <h3 class="title">Get Started by:</h3>
+                    <p class="Owner">Creating New document</p>
+                    <p class="lastEdited">Last Edited: few days ago</p>
                 </div>
                 <% if (locals.data) { %>
                   <% data.forEach(el => { %>
@@ -105,8 +75,21 @@
                     
                     <div class="DocCard <%= docType %>" data-doc-id="<%= el.docid %>">
                       <h3 class="title"><%= el.title %></h3>
-                      <p class="Owner">Owned: <%= el.owner_username %></p>
-                      <p class="lastEdited">Last Edited: <%= el.updatedat %></p>
+                      <p class="Owner">Owner: <%= el.owner_username %></p>
+                      <%
+                      const diff = Date.now() - new Date(el.updatedat);
+                      const minutes = Math.floor(diff / 60000);
+                      const hours = Math.floor(minutes / 60);
+                      const days = Math.floor(hours / 24);
+                                        
+                      let prettyTime;
+                      if (minutes < 60) prettyTime = `${minutes} min ago`;
+                      else if (hours < 24) prettyTime = `${hours} hr ago`;
+                      else prettyTime = `${days} day${days > 1 ? 's' : ''} ago`;
+                      %>
+                                        
+                    <p class="lastEdited">Last Edited: <%= prettyTime %></p>
+
                     </div>
                 
                   <% }) %>
