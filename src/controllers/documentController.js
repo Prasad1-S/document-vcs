@@ -49,8 +49,7 @@ export async function showDocumentContent(req, res) {
             owner = true;
           }
 
-          res.render("view.ejs", {
-            data: {
+          const data = {
               title: docsData.rows[0].title,
               createdat: docsData.rows[0].createdat,
               latestversion: versionData.rows[0].versioncount,
@@ -61,7 +60,12 @@ export async function showDocumentContent(req, res) {
               people: people.rows,
               isowner: owner,
               role: access
-            }, imgUrl: req.user.imgurl
+            }
+
+            console.log(data);
+
+          res.render("view.ejs", {
+            data , imgUrl: req.user.imgurl
           });
 
         } catch (err) {

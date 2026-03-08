@@ -57,7 +57,7 @@
       </div>
 
       <div class="essentials">
-        <% if(data.access!='VIEWER'){ %>
+        <% if(data.role!='VIEWER'){ %>
         <div class="versionContainer">
             <div class="btn">Version History</div>
         </div>
@@ -94,15 +94,15 @@
         </div>
         <% } %>
 
+        <% if(data.role!='VIEWER'){ %>
         <div class="NewVersion">
-          <% if(data.access!='VIEWER'){ %>
           <div class="editbtn">Edit</div>
-          <% } %>
           <% if(data.isowner){ %>
           <div class="sharebtn">Share</div>
           <% } %>
         </div>
       </div>
+      <% } %>
     </div>
 
     <!-- sharebox overlay -->
