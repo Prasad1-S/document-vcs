@@ -1,157 +1,207 @@
 # Docu-Vault
+
 A collaborative document management system with Git-like version control and granular access management. Docu-Vault allows users to create, edit, and share documents with role-based permissions while maintaining a complete version history. Every edit creates a new version, enabling users to track changes over time and rollback to any previous state seamlessly.
+
 Built with a focus on robust backend architecture, featuring custom authentication, OAuth integration, database transactions, and a complete version control system implementation.
 
-## Key Features
-### 1. User Authentication & Authorization
+##  Key Features
 
+### 1. User Authentication & Authorization
 - Email/password registration and login
 - Google OAuth 2.0 integration
-- Secure session management
+- Secure session management with Express-session
+- Password hashing with bcrypt
 
-
-### 3. User Profile Management
-
+### 2. User Profile Management
 - Unique username creation and updates
 - Profile viewing with document statistics
 - Profile picture from Google OAuth (placeholder for email/password users)
+- Profile completion workflow
 
-
-### 4. Document Management
-
-- Create and edit documents
+### 3. Document Management
+- Create and edit documents with rich text editor
 - Search and filter personal documents (owned vs shared)
 - Delete documents with cascade deletion of all versions and permissions
+- Document ownership and metadata tracking
 
-
-### 5. Git-Like Version Control
-
-- Every edit creates a new version
+### 4. Git-Like Version Control
+- Every edit creates a new version with commit message
 - Complete version history tracking
 - Rollback to any previous version (creates new version from old state)
 - Version history accessible to owners and editors
+- Version comparison and diff viewing
 
-
-### 6. Granular Access Control
-
+### 5. Granular Access Control
 - Share documents with users by username or email
 - Role-based permissions (Owner, Editor, Viewer)
 - Manage and revoke access at any time
 - Only owners can share documents
+- Access audit trail
 
-
-### 7. Dashboard & Organization
-
+### 6. Dashboard & Organization
 - Landing page with all user documents
-- Search functionality
+- Search functionality across documents
 - Filter by owned documents or shared documents
 - Profile statistics (documents created, documents shared with you)
+- Document activity timeline
 
-## Tech Stack
+## 🛠️ Tech Stack
+
 - **Frontend:** EJS, CSS, JavaScript, jQuery
 - **Backend:** Node.js, Express.js
-- **Database:** PostgreSQL
+- **Database:** PostgreSQL with UUID support
 - **Authentication:** Passport.js (Email/Password & Google OAuth 2.0)
 - **Session Management:** Express-session
 - **Testing:** Jest, Supertest
-- **Additional Libraries:** dotenv, uuid, Resend (email service)
+- **Additional Libraries:** dotenv, uuid, Resend (email service), bcrypt
+- **Deployment:** Docker, Render
 
-## Architecture
-```md
+##  Architecture
+
+```
 docu-vault/
 ├── src/
 │   ├── config/
-│   │   ├── db.js                
-│   │   └─ passport.js          
+│   │   ├── db.js                 # PostgreSQL connection
+│   │   └── passport.js           # Authentication strategies
 │   │ 
 │   ├── controllers/
-│   │   ├── accessController.js    
-│   │   ├── documentController.js
-│   │   ├── authController.js 
-│   │   ├── renderController.js   
-│   │   └── profileController.js 
+│   │   ├── accessController.js   # Document sharing & permissions
+│   │   ├── documentController.js # Document CRUD operations
+│   │   ├── authController.js     # Authentication logic
+│   │   ├── renderController.js   # View rendering
+│   │   └── profileController.js  # User profile management
 │   │
 │   ├── middleware/
-│   │   ├── auth.js              
-│   │   └── profile.js      
+│   │   ├── auth.js               # Authentication middleware
+│   │   └── profile.js            # Profile completion middleware
 │   ├── routes/
-│   │   ├── accessRoutes.js             
-│   │   ├── authRoutes.js             
-│   │   ├── documentRoutes.js         
-│   │   ├── profileRoutes.js          
-│   │   └── viewRoutes.js           
+│   │   ├── accessRoutes.js       # /access/* routes
+│   │   ├── authRoutes.js         # /auth/* routes
+│   │   ├── documentRoutes.js     # /document/* routes
+│   │   ├── profileRoutes.js      # /set-username/* routes
+│   │   └── viewRoutes.js         # View rendering routes
 │   │
-│   └── app.js
+│   └── app.js                    # Express application setup
 │
 ├── public/
-│   ├── css/
-│   │   ├── edit.css
-│   │   ├── landingPage.css
-│   │   ├── view.css
-│   │   ├── versions.css
-│   │   ├── user_identity.css
-│   │   ├── settings.css
-│   │   ├── new_document.css
-│   │   └── profile.css
-│   ├── js/
-│   │   ├── landingPage.js
-│   │   ├── new_document.js
-│   │   ├── user_identity.js
-│   │   ├── version.js
-│   │   ├── view.js
-│   │   └── script.js
-│   └── assets/
-│       └── placeholder-avatar.png
+│   ├── css/                      # Frontend styles
+│   ├── js/                       # Frontend JavaScript
+│   └── assets/                   # Images and static assets
 │
 ├── database/
-│   ├── migrations/
-│   │   ├── 001_create_users_table.sql
-│   │   ├── 002_create_documents_table.sql
-│   │   ├── 003_create_versions_table.sql
-│   │   └── 004_create_permissions_table.sql
-│   ├── seeds/
-│   │   └── dev_data.sql
-│   └── schema.sql              
+│   ├── migrations/               # Database schema migrations
+│   ├── seeds/                    # Development data seeds
+│   └── schema.sql                # Complete database schema
 │
-├── tests/          
-│
-├── .env.example                 
-├── .env
-├── .gitignore
-├── package.json
-├── package-lock.json
-├── app.js                       
-├── server.js                    
-└── README.md
+├── tests/                        # Jest test suites
+├── views/                        # EJS templates
+├── Dockerfile                    # Docker containerization
+├── docker-compose.yml            # Local development setup
+├── .env.example                  # Environment variables template
+├── package.json                  # Dependencies and scripts
+└── README.md                     # This file
 ```
 
-## Project Structure
+##  Database Schema
 
-## Core Features
+The application uses PostgreSQL with the following key tables:
 
-## Authentication & Authorization Flow
+- **users**: User accounts with authentication data
+- **documents**: Document metadata and ownership
+- **versions**: Complete version history for all documents
+- **access**: Granular permission management
 
-## Profile Completion Logic
+##  Security Features
 
-## Access Control & Middleware
-
-## Data Layer
-
-## Error Handling Strategy
-
-## Testing
-
-## Development Decisions
-
-## Known Limitations
-
-## Why This Project Exists
-Many beginner projects stop at CRUD operations, which does not reflect the complexity of real production systems.
-This project was built to bridge that gap by incorporating real-world backend patterns such as secure authentication, authorization layers, access management, and maintainable code structure.
+- Password hashing with bcrypt
+- Secure session management
+- CSRF protection through sessions
+- Input validation and sanitization
+- Role-based access control
+- Database transaction safety
 
 
-## Future Improvements
 
-## Setup & Local Development
+##  Deployment
 
-## Author
+### Local Development
+
+1. **Clone and Setup:**
+   ```bash
+   git clone <repository-url>
+   cd docu-vault
+   npm install
+   ```
+
+2. **Environment Configuration:**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+
+3. **Database Setup:**
+   ```bash
+   # Using docker-compose
+   docker-compose up -d db
+   
+   # Or setup PostgreSQL locally and run migrations
+   psql -f database/schema.sql
+   ```
+
+4. **Start Development Server:**
+   ```bash
+   npm run dev
+   ```
+
+
+##  Development Decisions
+
+### Why This Project Exists
+Many beginner projects stop at CRUD operations, which does not reflect the complexity of real production systems. This project was built to bridge that gap by incorporating real-world backend patterns such as:
+- Secure authentication and authorization
+- Database transaction management
+- Version control system implementation
+- Granular access control
+- Production-ready deployment setup
+
+### Key Architectural Choices
+- **Multi-stage Docker builds** for optimized production images
+- **PostgreSQL with UUIDs** for robust data integrity
+- **Express-session** for secure session management
+- **Passport.js** for flexible authentication strategies
+- **Jest testing** for comprehensive test coverage
+
+##  Future Improvements
+
+- [ ] Real-time collaboration with WebSockets
+- [ ] Document templates and presets
+- [ ] Advanced search with full-text indexing
+- [ ] Mobile-responsive design improvements
+- [ ] Document export functionality (PDF, DOCX)
+- [ ] Team workspaces and organization management
+- [ ] Advanced permission levels and groups
+- [ ] Activity notifications and email alerts
+- [ ] Document commenting and discussion threads
+- [ ] Integration with cloud storage services
+
+
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Author
+
+**Prasad1-S** - [GitHub Profile](https://github.com/Prasad1-S)
+
+## 🙏 Acknowledgments
+
+- Express.js and Node.js communities
+- PostgreSQL for reliable database management
+- Passport.js for authentication flexibility
+- The open-source community for incredible tools and libraries
+
+---
+
+**Built with ❤️ for learning and collaboration**
