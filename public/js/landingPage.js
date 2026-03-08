@@ -27,6 +27,10 @@ $(document).on('click', '.newDoc', function(e){
     window.location.href="document/new";
 });
 
+$(document).on('click', '.CreateNew', function(e){
+    window.location.href="document/new";
+});
+
 $(document).on('click','.home', function(e){
     window.location.href="/home";
 });

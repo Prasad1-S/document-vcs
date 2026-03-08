@@ -37,10 +37,21 @@
         <% if(locals.data){ %>
         <div class="title-input" data-id="<%= data.docId%>" data-version="<%= data.latestversion %>"><%= data.title %></div>
         <div class="CreatedBy">
+          <%
+          const diff = Date.now() - new Date(data.createdat);
+          const minutes = Math.floor(diff / 60000);
+          const hours = Math.floor(minutes / 60);
+          const days = Math.floor(hours / 24);
+                            
+          let prettyTime;
+          if (minutes < 60) prettyTime = `${minutes} min ago`;
+          else if (hours < 24) prettyTime = `${hours} hr ago`;
+          else prettyTime = `${days} day${days > 1 ? 's' : ''} ago`;
+          %>
           <% if(locals.data.created_by){ %>
-          <img src="<%= data.created_by %>" alt="ownerimg"> <%= data.owner %> | <p>27 July 2025</p></div>
+          <img src="<%= data.created_by %>" alt="ownerimg"> <%= data.owner %> | <p> <%= prettyTime %> </p></div>
           <% }else{ %>
-            <img src="/assets/github.png" alt="ownerimg"> <%= data.owner %> | <p>27 July 2025</p></div>
+            <img src="/assets/github.png" alt="ownerimg"> <%= data.owner %> | <p> <%= prettyTime %> </p></div>
             <% } %>
         <div class="content content-input"><%= data.content %></div>
       </div>

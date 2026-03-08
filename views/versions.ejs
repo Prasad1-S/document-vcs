@@ -54,7 +54,11 @@
 
             <div class="version-card-header">
               <div class="version-avatar">
+                <% if(v.editor.imgUrl){ %>
                 <img src="<%= v.editor.imgUrl %>" alt="<%= v.editor.name %>">
+                <% }else{ %>
+                  <img src="../assets/github.png" alt="<%= v.editor.name %>">
+                  <% } %>
               </div>
               <div class="version-meta">
                 <div class="version-number">
@@ -63,8 +67,19 @@
                     <span class="badge-current">Current</span>
                   <% } %>
                 </div>
+                <%
+                const diff = Date.now() - new Date(v.updatedAt);
+                const minutes = Math.floor(diff / 60000);
+                const hours = Math.floor(minutes / 60);
+                const days = Math.floor(hours / 24);
+                                  
+                let prettyTime;
+                if (minutes < 60) prettyTime = `${minutes} min ago`;
+                else if (hours < 24) prettyTime = `${hours} hr ago`;
+                else prettyTime = `${days} day${days > 1 ? 's' : ''} ago`;
+                %>
                 <div class="version-author"><%= v.editor.name %></div>
-                <div class="version-time"><%= v.updatedAt %></div>
+                <div class="version-time"><%= prettyTime %></div>
               </div>
             </div>
 

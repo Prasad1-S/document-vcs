@@ -52,6 +52,7 @@ export async function showDocumentContent(req, res) {
           res.render("view.ejs", {
             data: {
               title: docsData.rows[0].title,
+              createdat: docsData.rows[0].createdat,
               latestversion: versionData.rows[0].versioncount,
               docId: docId,
               content: versionData.rows[0].content,

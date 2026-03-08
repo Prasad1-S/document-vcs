@@ -12,7 +12,7 @@ export async function RegisterUser(req,res){
             )
     
             if(result.rowCount>0){
-                res.redirect("/",{data:"User already exists, try login!"})
+                res.redirect("/?notification=User already exists, try login!");
             }else{
                 bcrypt.hash(password,saltRounds, async(err, hash)=>{
                     if(err){
