@@ -4,14 +4,24 @@ import { pool } from "../config/db.js";
 export async function LandingPage(req,res){
             const Userid = req.user.userid;
             try {
+                
                 const data = await pool.query(
-                    `SELECT d.docid, d.title, d.updatedat, d.ownerid, da.role 
-                    FROM documents d 
-                    JOIN access da 
+                  `SELECT 
+                    d.docid, 
+                    d.title, 
+                    d.updatedat, 
+                    u.username AS owner_username,
+                    da.role 
+                   FROM documents d 
+                   JOIN access da 
                     ON d.docid = da.docid 
-                    WHERE da.userid = $1;`,
-                    [Userid]
+                   JOIN users u
+                    ON d.ownerid = u.userid
+                   WHERE da.userid = $1;`,
+                  [Userid]
                 );
+
+
             
                 let notification;
                 if (req.query.success === "edit_saved") {
