@@ -62,7 +62,6 @@ export async function showDocumentContent(req, res) {
               role: access
             }
 
-            console.log(data);
 
           res.render("view.ejs", {
             data , imgUrl: req.user.imgurl
