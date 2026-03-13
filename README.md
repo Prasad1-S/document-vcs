@@ -1,8 +1,9 @@
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-blue?style=for-the-badge)](https://document-vcs.onrender.com/)
 # Docu-Vault
 
 A collaborative document management system with Git-like version control and granular access management. Docu-Vault allows users to create, edit, and share documents with role-based permissions while maintaining a complete version history. Every edit creates a new version, enabling users to track changes over time and rollback to any previous state seamlessly.
-
 Built with a focus on robust backend architecture, featuring custom authentication, OAuth integration, database transactions, and a complete version control system implementation.
+
 
 ##  Key Features
 
